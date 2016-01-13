@@ -7,6 +7,7 @@ MinimalHUD_FILES = MinimalHUD.mm
 MinimalHUD_INSTALL_PATH = /Library/PreferenceBundles
 MinimalHUD_FRAMEWORKS = UIKit
 MinimalHUD_PRIVATE_FRAMEWORKS = Preferences
+MinimalHUD_LDFLAGS += -Wl,-segalign,4000
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 

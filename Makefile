@@ -7,6 +7,7 @@ include $(THEOS)/makefiles/common.mk
 TWEAK_NAME = HUD
 HUD_FILES = Tweak.xm
 HUD_FRAMEWORKS = UIKit CoreGraphics
+HUD_LDFLAGS += -Wl,-segalign,4000
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
