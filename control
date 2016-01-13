@@ -1,0 +1,9 @@
+Package: com.runnersaw.hud
+Name: Minimal HUD
+Depends: mobilesubstrate
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Finally, no more annoying volume pop-up over the video you're watching! Minimal HUD shows a tiny display when you change the volume that will never get in your way.
+Maintainer: Sawyer Vaughan <sawyervaughan@gmail.com>
+Author: Sawyer Vaughan <sawyervaughan@gmail.com>
+Section: Tweaks
