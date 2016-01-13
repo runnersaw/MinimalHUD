@@ -1,6 +1,6 @@
 ARCHS = armv7 arm64
 
-include theos/makefiles/common.mk
+include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = HUD
 HUD_FILES = Tweak.xm
