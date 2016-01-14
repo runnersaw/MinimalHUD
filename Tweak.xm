@@ -30,7 +30,7 @@
 - (void)reorientHUDIfNeeded:(_Bool)arg1;
 - (void)_recenterHUDView;
 
-- (void)placeHUDViewAtPoint:(CGPoint *)point andVertical:(_Bool)vertical;
+- (void)placeHUDView(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(_Bool)vertical;
 
 @end
 
@@ -114,6 +114,10 @@ if (enabled) {
 		[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height, view.frame.size.width, view.frame.size.height)];
 	}
 }
+
+}
+
+- (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(_Bool)vertical {
 
 }
 
