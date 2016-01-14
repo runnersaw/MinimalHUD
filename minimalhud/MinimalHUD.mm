@@ -14,6 +14,38 @@
 	                                                        target:self
 	                                                           set:NULL
 	                                                           get:NULL
+	                                                        detail:NULL
+	                                                          cell:PSLinkCell
+	                                                          edit:Nil];
+	 
+		[specifier setProperty:@YES forKey:@"enabled"];
+		[specifier setProperty:@"0" forKey:@"default"];
+		[specifier setProperty:@"MinimalHUDColorListController" forKey: @"customControllerClass"];
+		 
+		// Now add the specifier to your controller.
+		[specs addObject: specifier];
+
+		_specifiers = specs;
+	}
+
+	return _specifiers;
+}
+@end
+
+@interface MinimalHUDColorListController: PSListController {
+}
+@end
+
+@implementation MinimalHUDColorListController
+- (id)specifiers {
+	if(_specifiers == nil) {
+		NSMutableArray *specs = [[NSMutableArray alloc] init];
+		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"MinimalHUD" target:self] retain]];
+	
+		PSSpecifier* specifier = [PSSpecifier preferenceSpecifierNamed:@"title"
+	                                                        target:self
+	                                                           set:NULL
+	                                                           get:NULL
 	                                                        detail:NSClassFromString(@"PSListItemsController")
 	                                                          cell:PSLinkListCell
 	                                                          edit:Nil];
