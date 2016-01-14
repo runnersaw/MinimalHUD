@@ -30,7 +30,7 @@
 - (void)reorientHUDIfNeeded:(_Bool)arg1;
 - (void)_recenterHUDView;
 
-- (void)placeHUDView(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(_Bool)vertical;
+- (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(_Bool)vertical;
 
 @end
 
@@ -118,7 +118,27 @@ if (enabled) {
 }
 
 - (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(_Bool)vertical {
-
+	CGFloat *volumeWidth = 16;
+	CGFloat *volumeFromBottom = 22;
+	CGFloat *volumeFromTop = view.frame.size.height - volumeFromBottom;
+	CGFloat *volumeHeight = 
+	if (vertical) {
+		if ([location isEqualToString:@"right"]) {
+			[view setFrame:CGRectMake(w - view.frame.size.width+16, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
+		}
+		if ([location isEqualToString:@"left"]) {
+			[view setFrame:CGRectMake(22 - view.frame.size.width, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
+		}
+		if ([location isEqualToString:@"top"]) {
+			[view setFrame:CGRectMake((w-view.frame.size.width)/2, 22 - view.frame.size.height, view.frame.size.width, view.frame.size.height)];
+		}
+		if ([location isEqualToString:@"bottom"]) {
+			[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height + 16, view.frame.size.width, view.frame.size.height)];
+		}
+		if ([location isEqualToString:@"volume"]) {
+			[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height, view.frame.size.width, view.frame.size.height)];
+		}
+	}
 }
 
 
