@@ -30,6 +30,8 @@
 - (void)reorientHUDIfNeeded:(_Bool)arg1;
 - (void)_recenterHUDView;
 
+- (void)placeHUDViewAtPoint:(CGPoint *)point andVertical:(_Bool)vertical;
+
 @end
 
 @interface NSUserDefaults (Tweak_Category)
@@ -53,14 +55,6 @@ if ([location isEqualToString:@"right"] || [location isEqualToString:@"left"] ||
 
 UIView *backdropView = MSHookIvar<UIView *>(view, "_backdropView");
 [backdropView setHidden:YES];
-
-/*UIView *v = MSHookIvar<UIView *>(view, "_blockView");
-CGFloat x = v.frame.origin.x;
-CGFloat vh = v.frame.size.height;
-CGFloat vw = v.frame.size.width;
-CGFloat y = v.frame.origin.y + 5;
-[v setFrame:CGRectMake(x, y, vw, vh)];
-*/
 
 return view;
 
