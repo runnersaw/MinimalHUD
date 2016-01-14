@@ -26,7 +26,9 @@
 		[specifier setProperty:@"kListValue" forKey:@"key"];
 		 
 		// Now add the specifier to your controller.
-		[_specifiers append:specifier];
+		[specs append:specifier];
+
+		_specifiers = specs;
 	}
 
 	return _specifiers;
