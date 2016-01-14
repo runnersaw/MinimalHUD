@@ -1,4 +1,3 @@
-iphone:clang:latest:9.0
 ARCHS = armv7 arm64
 SDKVERSION = 8.1
 
