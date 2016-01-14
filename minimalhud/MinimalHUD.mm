@@ -9,6 +9,25 @@
 	if(_specifiers == nil) {
 		_specifiers = [[self loadSpecifiersFromPlistName:@"MinimalHUD" target:self] retain];
 	}
+	
+	PSSpecifier* specifier = [PSSpecifier preferenceSpecifierNamed:@"title"
+                                                        target:self
+                                                           set:NULL
+                                                           get:NULL
+                                                        detail:NSClassFromString(@"PSListItemsController")
+                                                          cell:PSLinkListCell
+                                                          edit:Nil];
+ 
+	[specifier setProperty:@YES forKey:@"enabled"];
+	[specifier setProperty:@"0" forKey:@"default"];		
+	specifier.values = [NSArray arrayWithObjects:@"0",@"1",@"2",nil];
+	specifier.titleDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"Title 1",@"Title 2",@"Title 3",nil] forKeys:specifier.values];
+	specifier.shortTitleDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"T1",@"T@",@"T3",nil] forKeys:specifier.values];
+	[specifier setProperty:@"kListValue" forKey:@"key"];
+	 
+	// Now add the specifier to your controller.
+	[_specifiers append:specifier];
+
 	return _specifiers;
 }
 @end

@@ -18,9 +18,9 @@
 			<key>defaults</key>
 			<string>com.runnersaw.hud</string>
 			<key>key</key>
-			<string>AwesomeSwitch1</string>
+			<string>enabled</string>
 			<key>label</key>
-			<string>Awesome Switch 1</string>
+			<string>Enabled</string>
 		</dict>
 	</array>
 	<key>title</key>
