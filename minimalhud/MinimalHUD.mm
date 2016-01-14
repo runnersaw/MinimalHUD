@@ -27,6 +27,8 @@
 		 
 		// Now add the specifier to your controller.
 		[specs addObject:specifier];
+
+		_specifiers = specs;
 	}
 
 	return _specifiers;
