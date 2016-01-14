@@ -8,7 +8,7 @@
 - (id)specifiers {
 	if(_specifiers == nil) {
 		NSMutableArray *specs = [[NSMutableArray alloc] init];
-		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"MinimalHUD" target:self] retain];
+		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"MinimalHUD" target:self] retain]];
 	
 		PSSpecifier* specifier = [PSSpecifier preferenceSpecifierNamed:@"title"
 	                                                        target:self
