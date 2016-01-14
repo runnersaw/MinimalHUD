@@ -118,10 +118,9 @@ if (enabled) {
 }
 
 - (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(_Bool)vertical {
-	CGFloat *volumeWidth = 16;
-	CGFloat *volumeFromBottom = 22;
+	CGFloat *volumeWidth = 16.0;
+	CGFloat *volumeFromBottom = 22.0;
 	CGFloat *volumeFromTop = view.frame.size.height - volumeFromBottom;
-	CGFloat *volumeHeight = 
 	if (vertical) {
 		if ([location isEqualToString:@"right"]) {
 			[view setFrame:CGRectMake(w - view.frame.size.width+16, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
