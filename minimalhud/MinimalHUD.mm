@@ -7,8 +7,8 @@
 @implementation MinimalHUDListController
 - (id)specifiers {
 	if(_specifiers == nil) {
-		NSMutableArray *specs = [NSMutableArray init];
-		[specs addObjectsFromArray: [self loadSpecifiersFromPlistName:@"MinimalHUD" target:self]];
+		NSMutableArray *specs = [[NSMutableArray alloc] init];
+		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"MinimalHUD" target:self] retain];
 	
 		PSSpecifier* specifier = [PSSpecifier preferenceSpecifierNamed:@"title"
 	                                                        target:self
@@ -26,9 +26,7 @@
 		[specifier setProperty:@"kListValue" forKey:@"key"];
 		 
 		// Now add the specifier to your controller.
-		[specs addObject:specifier];
-
-		_specifiers = specs;
+		[_specifiers append:specifier];
 	}
 
 	return _specifiers;
