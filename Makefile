@@ -1,5 +1,7 @@
-ARCHS = armv7 arm64
-SDKVERSION = 8.1
+ARCHS := armv7 arm64
+TARGET := iphone:clang
+TARGET_SDK_VERSION := 8.4
+TARGET_IPHONEOS_DEPLOYMENT_VERSION := 6.1
 
 include $(THEOS)/makefiles/common.mk
 
