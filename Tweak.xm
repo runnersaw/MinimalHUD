@@ -1,16 +1,13 @@
 #import <CoreGraphics/CoreGraphics.h>
 
+#import "include.h"
+
 @interface VolumeControl : NSObject
-
 + (id)sharedVolumeControl;
-- (float)getMediaVolume;
 - (float)volume;
-
 @end
 
 @interface SBHUDView : UIView
-
-@property(retain, nonatomic) NSString *title;
 - (id)_blockColorForValue:(float)arg1;
 - (void)_updateBlockView:(UIView *)arg1 value:(float)arg2 blockSize:(struct CGSize)arg3 point:(struct CGPoint)arg4;
 @end
@@ -39,25 +36,39 @@
 - (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
 
-static _Bool enabled = YES;
-static NSString *theme = @"warm";
-static NSString *location = @"right";
+static BOOL enabled = YES;
+static NSUInteger colorMode = MHDColorModeTheme;
+static NSUInteger theme = MHDColorThemeWarm;
+static UIColor *startingColor = nil;
+static UIColor *endingColor = nil;
+static UIColor *backgroundColor = nil;
+static NSUInteger locationMode = MHDLocationModePreset;
+static NSUInteger locationPreset = MHDLocationPresetRight;
+static NSUInteger locationOrientation = nil;
+static CGFloat locationX = 0;
+static CGFloat locationY = 0;
 
 %hook SBHUDController
 
 %new
 - (SBHUDView *)createView:(SBHUDView *)view {
+	if (!enabled)
+	{
+		return %orig;
+	}
 
-if ([location isEqualToString:@"right"] || [location isEqualToString:@"left"] || [location isEqualToString:@"volume"]) {
-	double rads = 3 * M_PI / 2;
-	view.transform = CGAffineTransformMakeRotation(rads);
-}
+	BOOL isCustomLocationVertical = ([locationMode isEqualToString:LOCATION_MODE_CUSTOM] && [locationOrientation isEqualToString:LOCATION_ORIENTATION_VERTICAL]);
+	BOOL isPresetVertical = ([locationMode isEqualToString:LOCATION_MO])
+	if ([location isEqualToString:@"right"] || [location isEqualToString:@"left"] || [location isEqualToString:@"volume"])
+	{
+		double rads = 3 * M_PI / 2;
+		view.transform = CGAffineTransformMakeRotation(rads);
+	}
 
-UIView *backdropView = MSHookIvar<UIView *>(view, "_backdropView");
-[backdropView setHidden:YES];
+	UIView *backdropView = MSHookIvar<UIView *>(view, "_backdropView");
+	[backdropView setHidden:YES];
 
-return view;
-
+	return view;
 }
 
 - (void)presentHUDView:(id)arg1 autoDismissWithDelay:(double)arg2 {
@@ -91,9 +102,13 @@ if (!enabled) {
 }
 
 - (void)_recenterHUDView {
-%orig;
+	%orig;
 
-if (enabled) {
+	if (!enabled)
+	{
+		%orig;
+	}
+
 	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
 	CGFloat w = [UIScreen mainScreen].bounds.size.width;
 	CGFloat h = [UIScreen mainScreen].bounds.size.height;
@@ -113,8 +128,6 @@ if (enabled) {
 	if ([location isEqualToString:@"volume"]) {
 		[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height, view.frame.size.width, view.frame.size.height)];
 	}
-}
-
 }
 
 - (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(_Bool)vertical {
@@ -147,11 +160,40 @@ if (enabled) {
 
 - (id)_blockColorForValue:(float)arg1
 {
+	if (!enabled)
+	{
+		return %orig;
+	}
 
-if (enabled) {
 	VolumeControl *vc = [%c(VolumeControl) sharedVolumeControl];
 	float v = [vc volume];
 
+	if (colorMode == MHDColorModeTheme)
+	{
+		switch (theme)
+		{
+			case MHDColorThemeWarm:
+			{
+				if (arg1 > v) {
+					return [UIColor blackColor];
+				}
+
+				CGFloat red = (CGFloat)sinf(arg1*M_PI/2 + M_PI/6); // pi/6 to pi/2
+				CGFloat green = (CGFloat)sinf(arg1*M_PI/2 + M_PI/2); // pi/2 to 5pi/6
+				CGFloat blue = (CGFloat)sinf(arg1*M_PI/2 + 5*M_PI/6); // 5pi/6 to pi/6
+
+				return [%c(UIColor) colorWithRed:red green:green blue:blue alpha:1.0];
+			}
+		}
+	}
+	else if (colorMode == MHDColorModeCustom)
+	{
+		return [UIColor redColor];
+	}
+
+	return %orig;
+
+/*
 	if ([theme isEqualToString:@"stock"]) {
 		return %orig;
 	} else if ([theme isEqualToString:@"rainbow"]) {
@@ -183,10 +225,7 @@ if (enabled) {
 	} else {
 		return %orig;
 	}
-} else {
-	return %orig;
-}
-
+	*/
 }
 
 %end
@@ -194,20 +233,47 @@ if (enabled) {
 static NSString *bundleId = @"com.runnersaw.hud";
 static NSString *notificationString = @"com.runnersaw.hud-preferencesChanged";
 
-static void loadPrefs() {
-	NSNumber *e = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"enabled" inDomain:bundleId];
-	enabled = (e)? [e boolValue]:YES;
+static UIColor *colorFromString(NSString *string)
+{
+	return [UIColor redColor];
+}
 
-	NSString *t = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"theme" inDomain:bundleId];
-	theme = (t)? t:@"stock";
+static CGFloat cgFloatFromString(NSString *string)
+{
+	return 0;
+}
 
-	NSString *l = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"location" inDomain:bundleId];
-	location = (l)? l:@"right";
-	
+static void loadPrefs()
+{
+	enabled = [(NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"enabled" inDomain:bundleId] boolValue];
+
+	colorMode = [(NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"colorMode" inDomain:bundleId] unsignedIntegerValue];
+	if (colorMode == MHDColorModeTheme)
+	{
+		theme = [(NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"theme" inDomain:bundleId] unsignedIntegerValue];
+	}
+	else if (colorMode == MHDColorModeCustom)
+	{
+		startingColor = colorFromString((NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"startingColor" inDomain:bundleId]);
+		endingColor = colorFromString((NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"endingColor" inDomain:bundleId]);
+		backgroundColor = colorFromString((NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"backgroundColor" inDomain:bundleId]);
+	}
+
+	locationMode = [(NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"locationMode" inDomain:bundleId] unsignedIntegerValue];
+	if (locationMode == MHDLocationModePreset)
+	{
+		locationPreset = [(NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"locationPreset" inDomain:bundleId] unsignedIntegerValue];
+	}
+	else if (locationMode == MHDLocationModeCustom)
+	{
+		locationOrientation = [(NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"locationOrientation" inDomain:bundleId] unsignedIntegerValue];
+		locationX = cgFloatFromString((NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"locationX" inDomain:bundleId]);
+		locationY = cgFloatFromString((NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"locationY" inDomain:bundleId]);
+	}
 }
  
-%ctor {
+%ctor
+{
     loadPrefs();
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPrefs, (CFStringRef)notificationString, NULL, CFNotificationSuspensionBehaviorCoalesce);
- 
 }

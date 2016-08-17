@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Minimal HUD Color Settings</string>
+		</dict>
+        <dict>
+            <key>cell</key>
+            <string>PSLinkListCell</string>
+            <key>defaults</key>
+            <string>com.runnersaw.hud</string>
+            <key>default</key>
+            <integer>0</integer>
+            <key>detail</key>
+            <string>PSListItemsController</string>
+            <key>key</key>
+            <string>color_mode</string>
+            <key>label</key>
+            <string>Color Mode</string>
+            <key>validTitles</key>
+            <array>
+                <string>Use MinimalHUD theme</string>
+                <string>Custom Colors</string>
+            </array>
+            <key>validValues</key>
+            <array>
+                <integer>0</integer>
+                <integer>1</integer>
+            </array>
+        </dict>
+	</array>
+	<key>title</key>
+	<string>MinimalHUD</string>
+</dict>
+</plist>
