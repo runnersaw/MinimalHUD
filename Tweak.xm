@@ -24,10 +24,10 @@
 - (void)presentHUDView:(id)arg1 autoDismissWithDelay:(double)arg2;
 - (void)presentHUDView:(id)arg1;
 
-- (void)reorientHUDIfNeeded:(_Bool)arg1;
+- (void)reorientHUDIfNeeded:(BOOL)arg1;
 - (void)_recenterHUDView;
 
-- (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(_Bool)vertical;
+- (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(BOOL)vertical;
 
 @end
 
@@ -51,19 +51,13 @@ static CGFloat locationY = 0;
 %hook SBHUDController
 
 %new
-- (SBHUDView *)createView:(SBHUDView *)view {
-	if (!enabled)
-	{
-		return %orig;
-	}
-
-	BOOL isCustomLocationVertical = ([locationMode isEqualToString:LOCATION_MODE_CUSTOM] && [locationOrientation isEqualToString:LOCATION_ORIENTATION_VERTICAL]);
-	BOOL isPresetVertical = ([locationMode isEqualToString:LOCATION_MO])
-	if ([location isEqualToString:@"right"] || [location isEqualToString:@"left"] || [location isEqualToString:@"volume"])
-	{
-		double rads = 3 * M_PI / 2;
-		view.transform = CGAffineTransformMakeRotation(rads);
-	}
+- (SBHUDView *)createView:(SBHUDView *)view
+{
+	// if ([location isEqualToString:@"right"] || [location isEqualToString:@"left"] || [location isEqualToString:@"volume"])
+	// {
+	// 	double rads = 3 * M_PI / 2;
+	// 	view.transform = CGAffineTransformMakeRotation(rads);
+	// }
 
 	UIView *backdropView = MSHookIvar<UIView *>(view, "_backdropView");
 	[backdropView setHidden:YES];
@@ -71,34 +65,37 @@ static CGFloat locationY = 0;
 	return view;
 }
 
-- (void)presentHUDView:(id)arg1 autoDismissWithDelay:(double)arg2 {
-
-if (enabled) {
-	SBHUDView *v = [self createView:arg1];
-    %orig(v, arg2);
-} else {
-	%orig;
-}
-
+- (void)presentHUDView:(id)arg1 autoDismissWithDelay:(double)arg2
+{
+	if (enabled)
+	{
+		SBHUDView *v = [self createView:arg1];
+	    %orig(v, arg2);
+	}
+	else
+	{
+		%orig;
+	}
 }
 
 - (void)presentHUDView:(id)arg1 {
+	if (enabled)
+	{
+		SBHUDView *v = [self createView:arg1];
+	    %orig(v);
+	}
+	else
+	{
+		%orig;
+	}
 
-if (enabled) {
-	SBHUDView *v = [self createView:arg1];
-    %orig(v);
-} else {
-	%orig;
 }
 
-}
-
-- (void)reorientHUDIfNeeded:(_Bool)arg1 {
-
-if (!enabled) {
-	%orig;
-}
-
+- (void)reorientHUDIfNeeded:(BOOL)arg1 {
+	if (!enabled)
+	{
+		%orig;
+	}
 }
 
 - (void)_recenterHUDView {
@@ -106,31 +103,31 @@ if (!enabled) {
 
 	if (!enabled)
 	{
-		%orig;
+		return;
 	}
 
-	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
-	CGFloat w = [UIScreen mainScreen].bounds.size.width;
-	CGFloat h = [UIScreen mainScreen].bounds.size.height;
+	// SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
+	// CGFloat w = [UIScreen mainScreen].bounds.size.width;
+	// CGFloat h = [UIScreen mainScreen].bounds.size.height;
 
-	if ([location isEqualToString:@"right"]) {
-		[view setFrame:CGRectMake(w - view.frame.size.width+16, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
-	}
-	if ([location isEqualToString:@"left"]) {
-		[view setFrame:CGRectMake(22 - view.frame.size.width, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
-	}
-	if ([location isEqualToString:@"top"]) {
-		[view setFrame:CGRectMake((w-view.frame.size.width)/2, 22 - view.frame.size.height, view.frame.size.width, view.frame.size.height)];
-	}
-	if ([location isEqualToString:@"bottom"]) {
-		[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height + 16, view.frame.size.width, view.frame.size.height)];
-	}
-	if ([location isEqualToString:@"volume"]) {
-		[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height, view.frame.size.width, view.frame.size.height)];
-	}
+	// if ([location isEqualToString:@"right"]) {
+	// 	[view setFrame:CGRectMake(w - view.frame.size.width+16, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
+	// }
+	// if ([location isEqualToString:@"left"]) {
+	// 	[view setFrame:CGRectMake(22 - view.frame.size.width, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
+	// }
+	// if ([location isEqualToString:@"top"]) {
+	// 	[view setFrame:CGRectMake((w-view.frame.size.width)/2, 22 - view.frame.size.height, view.frame.size.width, view.frame.size.height)];
+	// }
+	// if ([location isEqualToString:@"bottom"]) {
+	// 	[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height + 16, view.frame.size.width, view.frame.size.height)];
+	// }
+	// if ([location isEqualToString:@"volume"]) {
+	// 	[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height, view.frame.size.width, view.frame.size.height)];
+	// }
 }
 
-- (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(_Bool)vertical {
+- (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(BOOL)vertical {
 	/*CGFloat *volumeWidth = 16.0;
 	CGFloat *volumeFromBottom = 22.0;
 	CGFloat *volumeFromTop = view.frame.size.height - volumeFromBottom;
