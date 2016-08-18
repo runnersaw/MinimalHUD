@@ -345,7 +345,7 @@ static void loadPrefs()
 		locationX = lX ? cgFloatFromString(lX) : 0.0;
 
 		NSString *lY = settings[@"locationY"];
-		locationX = lY ? cgFloatFromString(lY) : 0.0;
+		locationY = lY ? cgFloatFromString(lY) : 0.0;
 	}
 }
  
