@@ -8,30 +8,32 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Minimal HUD Color Settings</string>
+			<string>MinimalHUD Theme</string>
 		</dict>
         <dict>
             <key>cell</key>
             <string>PSLinkListCell</string>
             <key>defaults</key>
-            <string>com.mycompany.MyAppName</string>
+            <string>com.runnersaw.hud</string>
+            <key>default</key>
+            <integer>0</integer>
+            <key>PostNotification</key>
+            <string>com.runnersaw.hud-preferencesChanged</string>
             <key>detail</key>
             <string>PSListItemsController</string>
+            <key>set</key>
+            <string>setValue:forSpecifier:</string>
             <key>key</key>
-            <string>color_pref</string>
+            <string>theme</string>
             <key>label</key>
-            <string>Color</string>
+            <string>Theme</string>
             <key>validTitles</key>
             <array>
-                <string>Blue</string>
-                <string>Yellow</string>
-                <string>Green</string>
+                <string>Warm</string>
             </array>
             <key>validValues</key>
             <array>
-                <string>Blue</string>
-                <string>Yellow</string>
-                <string>Green</string>
+                <integer>0</integer>
             </array>
         </dict>
 	</array>
