@@ -164,7 +164,7 @@ static CGFloat locationY = 0;
 
 %new
 - (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point vertical:(BOOL)vertical {
-	UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
+	// UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
 	/*CGFloat *volumeWidth = 16.0;
 	CGFloat *volumeFromBottom = 22.0;
 	CGFloat *volumeFromTop = view.frame.size.height - volumeFromBottom;
@@ -204,7 +204,7 @@ static CGFloat locationY = 0;
 
 	if (colorMode == MHDColorModeTheme)
 	{
-		switch (theme)
+		switch (colorTheme)
 		{
 			case MHDColorThemeWarm:
 			{
