@@ -267,10 +267,10 @@ static CGFloat locationY = 0;
 			return %orig;
 		}
 
-		CGFloat red = (endingRed - startingRed)*arg1 + startingRed;
-		CGFloat green = (endingGreen - startingGreen)*arg1 + startingGreen;
-		CGFloat blue = (endingBlue - startingBlue)*arg1 + startingBlue;
-		CGFloat alpha = (endingAlpha - startingAlpha)*arg1 + startingAlpha;
+		CGFloat red = (*endingRed - *startingRed) * arg1 + *startingRed;
+		CGFloat green = (*endingGreen - *startingGreen) * arg1 + *startingGreen;
+		CGFloat blue = (*endingBlue - *startingBlue) * arg1 + *startingBlue;
+		CGFloat alpha = (*endingAlpha - *startingAlpha) * arg1 + *startingAlpha;
 
 		return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 	}
@@ -301,7 +301,7 @@ static CGFloat cgFloatFromString(NSString *string)
 
 static void loadPrefs()
 {
-	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
+	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", bundleId];
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:path];
 	NSLog(@"loadPrefs %@", settings);
 
@@ -309,7 +309,7 @@ static void loadPrefs()
 	enabled = e ? e.boolValue : NO;
 
 	NSNumber *cM = settings[@"colorMode"];
-	colorMode = cm ? cm.unsignedIntegerValue : MHDColorModeTheme;
+	colorMode = cM ? cM.unsignedIntegerValue : MHDColorModeTheme;
 
 	if (colorMode == MHDColorModeTheme)
 	{
