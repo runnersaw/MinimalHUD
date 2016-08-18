@@ -7,7 +7,10 @@ typedef NS_ENUM(NSUInteger, MHDColorMode) {
 
 // COLOR THEMES
 typedef NS_ENUM(NSUInteger, MHDColorTheme) {
-	MHDColorThemeWarm
+	MHDColorThemeWarm,
+	MHDColorThemeRainbow,
+	MHDColorThemeTranslucent,
+	MHDColorThemeStock
 };
 
 // LOCATION MODES
