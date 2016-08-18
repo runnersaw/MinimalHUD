@@ -29,7 +29,7 @@
 
 - (void)setPreferenceValue:(id)value specifier:(PSSpecifier*)specifier {
 	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
-	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:path]];
+	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:path];
 	[settings setObject:value forKey:specifier.properties[@"key"]];
 	[settings writeToFile:path atomically:YES];
 	CFStringRef notificationName = (CFStringRef)specifier.properties[@"PostNotification"];
