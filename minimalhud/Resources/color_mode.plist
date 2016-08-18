@@ -21,8 +21,10 @@
             <string>com.runnersaw.hud-preferencesChanged</string>
             <key>detail</key>
             <string>PSListItemsController</string>
+            <key>get</key>
+            <string>readPreferenceValue:</string>
             <key>set</key>
-            <string>setValue:forSpecifier:</string>
+            <string>setPreferenceValue:forSpecifier:</string>
             <key>key</key>
             <string>colorMode</string>
             <key>label</key>
