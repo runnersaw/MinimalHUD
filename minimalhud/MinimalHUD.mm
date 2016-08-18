@@ -23,7 +23,7 @@
 
 - (void)setValue:(id)value forSpecifier:(id)specifier
 {
-	
+	NSLog(@"%@ %@", value, specifier);
 }
 
 @end
