@@ -9,7 +9,7 @@ ADDITIONAL_OBJCFLAGS = -fobjc-arc
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = HUD
-HUD_FILES = Tweak.xm
+HUD_FILES = Tweak.xm $(wildcard *.m)
 HUD_FRAMEWORKS = UIKit CoreGraphics
 HUD_LDFLAGS += -Wl,-segalign,4000
 
