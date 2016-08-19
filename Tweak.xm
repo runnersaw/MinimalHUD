@@ -9,60 +9,46 @@
 
 @interface SBHUDView : UIView
 - (id)_blockColorForValue:(float)arg1;
-- (void)_updateBlockView:(UIView *)arg1 value:(float)arg2 blockSize:(struct CGSize)arg3 point:(struct CGPoint)arg4;
 @end
 
 @interface SBHUDController : NSObject
 
 @property(retain, nonatomic) UIView *hudContentView;
 @property(retain, nonatomic) SBHUDView *hudView;
-
-- (void)_createUI;
-
 - (void)presentHUDView:(id)arg1 autoDismissWithDelay:(double)arg2;
 - (void)presentHUDView:(id)arg1;
-
 - (void)reorientHUDIfNeeded:(BOOL)arg1;
 - (void)_recenterHUDView;
-
 - (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point andVertical:(BOOL)vertical;
 
 // New methods
 - (BOOL)isVertical;
-- (SBHUDView *)createView:(SBHUDView *)view;
+- (void)configureView:(SBHUDView *)view;
 
 @end
 
-@interface NSUserDefaults (Tweak_Category)
+@interface NSUserDefaults (MinimalHUD)
 - (id)objectForKey:(NSString *)key inDomain:(NSString *)domain;
 - (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
 
-static BOOL enabled = YES;
-static NSUInteger colorMode = MHDColorModeTheme;
-static NSUInteger colorTheme = MHDColorThemeWarm;
-static UIColor *startingColor = nil;
-static UIColor *endingColor = nil;
-static UIColor *backgroundColor = nil;
-static NSUInteger locationMode = MHDLocationModePreset;
-static NSUInteger locationPreset = MHDLocationPresetRight;
-static NSUInteger locationOrientation = nil;
-static CGFloat locationX = 0;
-static CGFloat locationY = 0;
+static NSString *bundleId = @"com.runnersaw.hud";
+static NSString *notificationString = @"com.runnersaw.hud-preferencesChanged";
+static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:nil];
 
 %hook SBHUDController
 
 %new
 - (BOOL)isVertical
 {
-	BOOL isCustomVertical = (locationMode == MHDLocationModeCustom && locationOrientation == MHDLocationOrientationVertical);
-	BOOL isPresetVertical = (locationMode == MHDLocationModePreset && 
-		(locationPreset == MHDLocationPresetRight || locationPreset == MHDLocationPresetLeft || locationPreset == MHDLocationPresetVolume));
+	BOOL isCustomVertical = (preferences.locationMode == MHDLocationModeCustom && preferences.locationOrientation == MHDLocationOrientationVertical);
+	BOOL isPresetVertical = (preferences.locationMode == MHDLocationModePreset && 
+		(preferences.locationPreset == MHDLocationPresetRight || preferences.locationPreset == MHDLocationPresetLeft || preferences.locationPreset == MHDLocationPresetVolume));
 	return (isCustomVertical || isPresetVertical);
 }
 
 %new
-- (SBHUDView *)createView:(SBHUDView *)view
+- (void)configureView:(SBHUDView *)view
 {
 	if ([self isVertical])
 	{
@@ -80,25 +66,17 @@ static CGFloat locationY = 0;
 {
 	if (enabled)
 	{
-		SBHUDView *v = [self createView:arg1];
-	    %orig(v, arg2);
+		[self configureView:arg1];
 	}
-	else
-	{
-		%orig;
-	}
+	%orig;
 }
 
 - (void)presentHUDView:(id)arg1 {
 	if (enabled)
 	{
-		SBHUDView *v = [self createView:arg1];
-	    %orig(v);
+		[self configureView:arg1];
 	}
-	else
-	{
-		%orig;
-	}
+	%orig;
 }
 
 - (void)reorientHUDIfNeeded:(BOOL)arg1 {
@@ -117,13 +95,19 @@ static CGFloat locationY = 0;
 	}
 
 	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
-	CGFloat w = [UIScreen mainScreen].bounds.size.width;
-	CGFloat h = [UIScreen mainScreen].bounds.size.height;
 	UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
+
+	CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+	CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
 	CGFloat blockWidth = blockView.frame.size.width;
 	CGFloat blockHeight = blockView.frame.size.height;
-	NSLog(@"blockView %@ %@", @(blockWidth), @(blockHeight));
-	NSLog(@"blockView frame %@", NSStringFromCGRect(blockView.frame));
+
+	if ([self isVertical])
+	{
+		CGFloat tempWidth = blockHeight;
+		blockHeight = blockWidth;
+		blockWidth = tempWidth;
+	}
 
 	if (locationMode == MHDLocationModePreset)
 	{
@@ -278,16 +262,7 @@ static CGFloat locationY = 0;
 	return %orig;
 }
 
-- (void)_updateBlockView:(UIView *)arg1 value:(float)arg2 blockSize:(struct CGSize)arg3 point:(struct CGPoint)arg4
-{
-	%log;
-	%orig;
-}
-
 %end
-
-static NSString *bundleId = @"com.runnersaw.hud";
-static NSString *notificationString = @"com.runnersaw.hud-preferencesChanged";
 
 static UIColor *colorFromString(NSString *string)
 {
@@ -303,50 +278,7 @@ static void loadPrefs()
 {
 	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", bundleId];
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:path];
-	NSLog(@"loadPrefs %@", settings);
-
-	NSNumber *e = settings[@"enabled"];
-	enabled = e ? e.boolValue : NO;
-
-	NSNumber *cM = settings[@"colorMode"];
-	colorMode = cM ? cM.unsignedIntegerValue : MHDColorModeTheme;
-
-	if (colorMode == MHDColorModeTheme)
-	{
-		NSNumber *cT = settings[@"colorTheme"];
-		colorTheme = cT ? cT.unsignedIntegerValue : MHDColorThemeWarm;
-	}
-	else if (colorMode == MHDColorModeCustom)
-	{
-		NSString *sC = settings[@"startingColor"];
-		startingColor = sC ? colorFromString(sC) : [UIColor whiteColor];
-
-		NSString *eC = settings[@"endingColor"];
-		endingColor = eC ? colorFromString(eC) : [UIColor whiteColor];
-
-		NSString *bC = settings[@"backgroundColor"];
-		backgroundColor = bC ? colorFromString(bC) : [UIColor blackColor];
-	}
-
-	NSNumber *lM = settings[@"locationMode"];
-	locationMode = lM.unsignedIntegerValue;
-
-	if (locationMode == MHDLocationModePreset)
-	{
-		NSNumber *lP = settings[@"locationPreset"];
-		locationPreset = lP ? lP.unsignedIntegerValue : MHDLocationPresetTop;
-	}
-	else if (locationMode == MHDLocationModeCustom)
-	{
-		NSNumber *lO = settings[@"locationOrientation"];
-		locationOrientation = lO ? lO.unsignedIntegerValue : MHDLocationOrientationHorizontal;
-
-		NSString *lX = settings[@"locationX"];
-		locationX = lX ? cgFloatFromString(lX) : 0.0;
-
-		NSString *lY = settings[@"locationY"];
-		locationY = lY ? cgFloatFromString(lY) : 0.0;
-	}
+	preferences = [[MHDPreferences alloc] initWithSettings:settings];
 }
  
 %ctor

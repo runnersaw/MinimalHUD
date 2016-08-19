@@ -1,22 +1,37 @@
 #import <Preferences/Preferences.h>
 
-@interface MinimalHUDListController: PSListController
+@interface MinimalHUDListController : PSListController
+
+@property (nonatomic, strong) MHDPreferences *preferences;
+
 @end
 
 @implementation MinimalHUDListController
 
 - (id)specifiers {
-	if(_specifiers == nil) {
-		NSMutableArray *specs = [[NSMutableArray alloc] init];
+	NSMutableArray *specs = [[NSMutableArray alloc] init];
 
-		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"MinimalHUD" target:self] retain]];
-		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode" target:self] retain]];
+	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"MinimalHUD" target:self] retain]];
+	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode" target:self] retain]];
+	if (self.preferences.colorMode == MHDColorModeTheme)
+	{
 		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode_theme" target:self] retain]];
-		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode" target:self] retain]];
-		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode_preset" target:self] retain]];
-
-		_specifiers = specs;
 	}
+	else
+	{
+		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode_custom" target:self] retain]];
+	}
+	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode" target:self] retain]];
+	if (self.preferences.locationMode == MHDLocationModePreset)
+	{
+		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode_preset" target:self] retain]];
+	}
+	else
+	{
+		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode_custom" target:self] retain]];
+	}
+
+	_specifiers = specs;
 
 	return _specifiers;
 }
@@ -33,7 +48,10 @@
 	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:path];
 	[settings setObject:value forKey:specifier.properties[@"key"]];
 	[settings writeToFile:path atomically:YES];
-	NSLog(@"New settings %@", settings);
+
+	self.preferences = [[MHDPreferences alloc] initWithSettings:settings];
+	[self reloadSpecifiers];
+
 	CFStringRef notificationName = (CFStringRef)specifier.properties[@"PostNotification"];
 	if (notificationName) {
 		CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), notificationName, NULL, NULL, YES);
