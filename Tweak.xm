@@ -64,7 +64,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 
 - (void)presentHUDView:(id)arg1 autoDismissWithDelay:(double)arg2
 {
-	if (enabled)
+	if (preferences.enabled)
 	{
 		[self configureView:arg1];
 	}
@@ -72,7 +72,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 }
 
 - (void)presentHUDView:(id)arg1 {
-	if (enabled)
+	if (preferences.enabled)
 	{
 		[self configureView:arg1];
 	}
@@ -80,7 +80,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 }
 
 - (void)reorientHUDIfNeeded:(BOOL)arg1 {
-	if (!enabled)
+	if (!preferences.enabled)
 	{
 		%orig;
 	}
@@ -89,7 +89,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 - (void)_recenterHUDView {
 	%orig;
 
-	if (!enabled)
+	if (!preferences.enabled)
 	{
 		return;
 	}
@@ -109,9 +109,9 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 		blockWidth = tempWidth;
 	}
 
-	if (locationMode == MHDLocationModePreset)
+	if (preferences.locationMode == MHDLocationModePreset)
 	{
-		switch (locationPreset)
+		switch (preferences.locationPreset)
 		{
 			case MHDLocationPresetRight:
 			{
@@ -140,7 +140,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 			}
 		}
 	}
-	else if (locationMode == MHDLocationModeCustom)
+	else if (preferences.locationMode == MHDLocationModeCustom)
 	{
 
 	}
@@ -178,7 +178,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 
 - (id)_blockColorForValue:(float)arg1
 {
-	if (!enabled)
+	if (!preferences.enabled)
 	{
 		return %orig;
 	}
@@ -186,9 +186,9 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 	VolumeControl *vc = [%c(VolumeControl) sharedVolumeControl];
 	float v = [vc volume];
 
-	if (colorMode == MHDColorModeTheme)
+	if (preferences.colorMode == MHDColorModeTheme)
 	{
-		switch (colorTheme)
+		switch (preferences.colorTheme)
 		{
 			case MHDColorThemeWarm:
 			{
@@ -228,23 +228,23 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 			}
 		}
 	}
-	else if (colorMode == MHDColorModeCustom)
+	else if (preferences.colorMode == MHDColorModeCustom)
 	{
 		if (arg1 > v) {
-			return backgroundColor;
+			return preferences.backgroundColor;
 		}
 
 		CGFloat *startingRed = nil; 
 		CGFloat *startingGreen = nil;
 		CGFloat *startingBlue = nil;
 		CGFloat *startingAlpha = nil;
-		BOOL success1 = [startingColor getRed:startingRed green:startingGreen blue:startingBlue alpha:startingAlpha];
+		BOOL success1 = [preferences.startingColor getRed:startingRed green:startingGreen blue:startingBlue alpha:startingAlpha];
 
 		CGFloat *endingRed = nil; 
 		CGFloat *endingGreen = nil;
 		CGFloat *endingBlue = nil;
 		CGFloat *endingAlpha = nil;
-		BOOL success2 = [endingColor getRed:endingRed green:endingGreen blue:endingBlue alpha:endingAlpha];
+		BOOL success2 = [preferences.endingColor getRed:endingRed green:endingGreen blue:endingBlue alpha:endingAlpha];
 
 		if (!success1 || !success2)
 		{
