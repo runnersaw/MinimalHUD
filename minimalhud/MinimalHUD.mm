@@ -12,9 +12,6 @@
 @implementation MinimalHUDListController
 
 - (id)specifiers {
-	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
-	self.preferences = [[MHDPreferences alloc] initWithSettings:settings];
-
 	NSMutableArray *specs = [[NSMutableArray alloc] init];
 
 	// Enable button
