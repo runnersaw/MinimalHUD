@@ -39,7 +39,7 @@
 		else if (self.colorMode == MHDColorModeCustom)
 		{
 			NSString *sC = settings[@"startingColor"];
-			UIColor *sColor;
+			UIColor *sColor = nil;
 			if (sC)
 			{
 				sColor = [self.class colorFromString:sC];
@@ -47,7 +47,7 @@
 			self.startingColor = sColor ? : [UIColor whiteColor];
 
 			NSString *eC = settings[@"endingColor"];
-			UIColor *eColor;
+			UIColor *eColor = nil;
 			if (eC)
 			{
 				eColor = [self.class colorFromString:eC];
@@ -55,7 +55,7 @@
 			self.endingColor = eColor ? : [UIColor whiteColor];
 
 			NSString *bC = settings[@"backgroundColor"];
-			UIColor *bColor;
+			UIColor *bColor = nil;
 			if (bC)
 			{
 				bColor = [self.class colorFromString:bC];
