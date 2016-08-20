@@ -50,7 +50,7 @@
 - (void)setPreferenceValue:(id)value forSpecifier:(PSSpecifier*)specifier {
 	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
 	[settings setObject:value forKey:specifier.properties[@"key"]];
-	[settings writeToFile:path atomically:YES];
+	[settings writeToFile:PREFERENCES_PATH atomically:YES];
 
 	self.preferences = [[MHDPreferences alloc] initWithSettings:settings];
 	[self reloadSpecifiers];
