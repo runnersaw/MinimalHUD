@@ -23,9 +23,9 @@ typedef NS_ENUM(NSUInteger, MHDLocationMode) {
 
 // PRESET LOCATIONS
 typedef NS_ENUM(NSUInteger, MHDLocationPreset) {
+	MHDLocationPresetTop,
 	MHDLocationPresetRight,
 	MHDLocationPresetLeft,
-	MHDLocationPresetTop,
 	MHDLocationPresetBottom,
 	MHDLocationPresetVolume
 };
