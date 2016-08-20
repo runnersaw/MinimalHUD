@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-#import "include.h"
+#import "../include.h"
 
 @interface MHDPreferences : NSObject
 
