@@ -32,6 +32,8 @@
 - (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
 
+#define PADDING 2.
+
 static NSString *bundleId = @"com.runnersaw.hud";
 static NSString *notificationString = @"com.runnersaw.hud-preferencesChanged";
 static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:nil];
@@ -115,62 +117,78 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 		{
 			case MHDLocationPresetRight:
 			{
-				[view setFrame:CGRectMake(w - view.frame.size.width+16, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
+				[self placeHUDViewAtPoint:CGPointMake(screenWidth - blockWidth - PADDING, (screenHeight - blockHeight)/2.) vertical:YES];
 				break;
 			}
 			case MHDLocationPresetLeft:
 			{
-				[view setFrame:CGRectMake(22 - view.frame.size.width, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
+				[self placeHUDViewAtPoint:CGPointMake(PADDING, (screenHeight - blockHeight)/2.) vertical:YES];
 				break;
 			}
 			case MHDLocationPresetTop:
 			{
-				[view setFrame:CGRectMake((w-view.frame.size.width)/2, 22 - view.frame.size.height, view.frame.size.width, view.frame.size.height)];
+				[self placeHUDViewAtPoint:CGPointMake((screenWidth - blockWidth)/2., PADDING) vertical:NO];
 				break;
 			}
 			case MHDLocationPresetBottom:
 			{
-				[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height + 16, view.frame.size.width, view.frame.size.height)];
+				[self placeHUDViewAtPoint:CGPointMake((screenWidth - blockWidth)/2., screenHeight - blockHeight - PADDING) vertical:NO];
 				break;
 			}
 			case MHDLocationPresetVolume:
 			{
-				[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height, view.frame.size.width, view.frame.size.height)];
+				[self placeHUDViewAtPoint:CGPointMake(PADDING, 50.) vertical:YES];
 				break;
 			}
 		}
 	}
 	else if (preferences.locationMode == MHDLocationModeCustom)
 	{
-
+		[self placeHUDViewAtPoint:CGPointMake(preferences.locationX, preferences.locationY) vertical:[self isVertical]];
 	}
 }
 
 %new
-- (void)placeHUDView:(SBHUDView *)view atPoint:(CGPoint *)point vertical:(BOOL)vertical {
-	// UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
-	/*CGFloat *volumeWidth = 16.0;
-	CGFloat *volumeFromBottom = 22.0;
-	CGFloat *volumeFromTop = view.frame.size.height - volumeFromBottom;
-	if (vertical) {
-		if ([location isEqualToString:@"right"]) {
-			[view setFrame:CGRectMake(w - view.frame.size.width+16, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
-		}
-		if ([location isEqualToString:@"left"]) {
-			[view setFrame:CGRectMake(22 - view.frame.size.width, (h-view.frame.size.height)/2, view.frame.size.width, view.frame.size.height)];
-		}
-		if ([location isEqualToString:@"top"]) {
-			[view setFrame:CGRectMake((w-view.frame.size.width)/2, 22 - view.frame.size.height, view.frame.size.width, view.frame.size.height)];
-		}
-		if ([location isEqualToString:@"bottom"]) {
-			[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height + 16, view.frame.size.width, view.frame.size.height)];
-		}
-		if ([location isEqualToString:@"volume"]) {
-			[view setFrame:CGRectMake((w-view.frame.size.width)/2, h-view.frame.size.height, view.frame.size.width, view.frame.size.height)];
-		}
-	}*/
-}
+- (void)placeHUDViewAtPoint:(CGPoint *)point vertical:(BOOL)vertical {
+	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
+	UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
 
+	CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+	CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+
+	CGFloat blockOffsetX = blockView.frame.origin.x;
+	CGFloat blockOffsetY = blockView.frame.origin.y;
+	CGFloat blockWidth = blockView.frame.size.width;
+	CGFloat blockHeight = blockView.frame.size.height;
+
+
+	if ([self isVertical])
+	{
+		CGFloat tempWidth = blockHeight;
+		blockHeight = blockWidth;
+		blockWidth = tempWidth;
+
+		CGFloat tempX = blockOffsetY;
+		blockOffsetY = blockOffsetX;
+		blockOffsetX = tempX;
+	}
+
+	CGFloat finalX = point.x - blockOffsetX;
+	if (finalX > screenWidth)
+	{
+		finalX = 0;
+	}
+
+	CGFloat finalY = point.y - blockOffsetY;
+	if (finalY > screenHeight)
+	{
+		finalY = 0;
+	}
+
+	CGRect frame = view.frame;
+	frame.origin = CGPointMake(finalX, finalY);
+	view.frame = frame;
+}
 
 %end
 
