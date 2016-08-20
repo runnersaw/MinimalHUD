@@ -1,6 +1,6 @@
 #import <Preferences/Preferences.h>
 
-#import "MHDPreferences.h"
+#import "../MHDPreferences.h"
 
 @interface MinimalHUDListController : PSListController
 
