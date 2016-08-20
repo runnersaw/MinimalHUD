@@ -25,6 +25,7 @@
 // New methods
 - (BOOL)isVertical;
 - (void)configureView:(SBHUDView *)view;
+- (void)placeHUDViewAtPoint:(CGPoint)point vertical:(BOOL)vertical;
 
 @end
 
@@ -60,9 +61,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 	}
 
 	UIView *backdropView = MSHookIvar<UIView *>(view, "_backdropView");
-	[backdropView setHidden:YES];
-
-	return view;
+	backdropView.hidden = YES;
 }
 
 - (void)presentHUDView:(id)arg1 autoDismissWithDelay:(double)arg2
@@ -150,7 +149,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 }
 
 %new
-- (void)placeHUDViewAtPoint:(CGPoint *)point vertical:(BOOL)vertical {
+- (void)placeHUDViewAtPoint:(CGPoint)point vertical:(BOOL)vertical {
 	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
 	UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
 
