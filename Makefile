@@ -15,8 +15,8 @@ HUD_LDFLAGS += -Wl,-segalign,4000
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
-#after-install::
-#	install.exec "killall -9 SpringBoard"
+after-install::
+	install.exec "killall -9 SpringBoard"
 
 SUBPROJECTS += minimalhud
 include $(THEOS_MAKE_PATH)/aggregate.mk
