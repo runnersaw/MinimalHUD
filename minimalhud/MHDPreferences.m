@@ -103,6 +103,7 @@
 	UIColor *color = colors[finalStr.lowercaseString];
 	if (color)
 	{
+		NSLog(@"found color %@", finalStr);
 		return color;
 	}
 
@@ -141,6 +142,8 @@
         default:
         	return nil;
     }
+
+    NSLog(@"%@ %@ %@ %@", @(red), @(green), @(blue), @(alpha));
 
     if (red == NOT_FOUND || green == NOT_FOUND || blue == NOT_FOUND)
     {

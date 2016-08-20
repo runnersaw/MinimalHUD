@@ -265,27 +265,29 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 			return preferences.backgroundColor;
 		}
 
-		CGFloat *startingRed = nil; 
-		CGFloat *startingGreen = nil;
-		CGFloat *startingBlue = nil;
-		CGFloat *startingAlpha = nil;
-		BOOL success1 = [preferences.startingColor getRed:startingRed green:startingGreen blue:startingBlue alpha:startingAlpha];
+		CGFloat startingRed; 
+		CGFloat startingGreen;
+		CGFloat startingBlue;
+		CGFloat startingAlpha;
+		BOOL success1 = [preferences.startingColor getRed:&startingRed green:&startingGreen blue:&startingBlue alpha:&startingAlpha];
 
-		CGFloat *endingRed = nil; 
-		CGFloat *endingGreen = nil;
-		CGFloat *endingBlue = nil;
-		CGFloat *endingAlpha = nil;
-		BOOL success2 = [preferences.endingColor getRed:endingRed green:endingGreen blue:endingBlue alpha:endingAlpha];
+		CGFloat endingRed; 
+		CGFloat endingGreen;
+		CGFloat endingBlue;
+		CGFloat endingAlpha;
+		BOOL success2 = [preferences.endingColor getRed:&endingRed green:&endingGreen blue:&endingBlue alpha:&endingAlpha];
 
 		if (!success1 || !success2)
 		{
 			return %orig;
 		}
 
-		CGFloat red = (*endingRed - *startingRed) * arg1 + *startingRed;
-		CGFloat green = (*endingGreen - *startingGreen) * arg1 + *startingGreen;
-		CGFloat blue = (*endingBlue - *startingBlue) * arg1 + *startingBlue;
-		CGFloat alpha = (*endingAlpha - *startingAlpha) * arg1 + *startingAlpha;
+		CGFloat red = (endingRed - startingRed) * arg1 + startingRed;
+		CGFloat green = (endingGreen - startingGreen) * arg1 + startingGreen;
+		CGFloat blue = (endingBlue - startingBlue) * arg1 + startingBlue;
+		CGFloat alpha = (endingAlpha - startingAlpha) * arg1 + startingAlpha;
+
+		NSLog(@"block color %@ %@ %@ %@", @(red), @(green), @(blue), @(alpha));
 
 		return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 	}
