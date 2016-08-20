@@ -53,6 +53,12 @@
 }
 
 - (void)setPreferenceValue:(id)value forSpecifier:(PSSpecifier*)specifier {
+	NSLog(@"%@ %@", value, specifier);
+	if (!value)
+	{
+		return;
+	}
+
 	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
 	[settings setObject:value forKey:specifier.properties[@"key"]];
 	[settings writeToFile:PREFERENCES_PATH atomically:YES];

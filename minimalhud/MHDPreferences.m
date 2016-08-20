@@ -12,7 +12,7 @@
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, readwrite) MHDLocationMode locationMode;
 @property (nonatomic, readwrite) MHDLocationPreset locationPreset;
-@property (nonatomic, readwrite) MHDLocationOrientation locationOrientation;
+@property (nonatomic, readwrite) BOOL locationOrientationVertical;
 @property (nonatomic, readwrite) CGFloat locationX;
 @property (nonatomic, readwrite) CGFloat locationY;
 
@@ -74,7 +74,7 @@
 		else if (self.locationMode == MHDLocationModeCustom)
 		{
 			NSNumber *lO = settings[@"locationOrientation"];
-			self.locationOrientation = lO ? lO.unsignedIntegerValue : MHDLocationOrientationHorizontal;
+			self.locationOrientationVertical = lO ? lO.boolValue : NO;
 
 			NSString *lX = settings[@"locationX"];
 			self.locationX = lX ? [self.class cgFloatFromString:lX] : 0.0;
@@ -155,8 +155,8 @@
 
 + (CGFloat)colorComponentFrom:(NSString *)string start:(NSUInteger)start length:(NSUInteger)length {
     NSString *substring = [string substringWithRange:NSMakeRange(start, length)];
+
     NSString *fullHex = length == 2 ? substring : [NSString stringWithFormat: @"%@%@", substring, substring];
-    
     unsigned int hexComponent;
     BOOL success = [[NSScanner scannerWithString:fullHex] scanHexInt:&hexComponent];
     if (!success)

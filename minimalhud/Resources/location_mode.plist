@@ -28,7 +28,7 @@
             <key>key</key>
             <string>locationMode</string>
             <key>label</key>
-            <string>Color Mode</string>
+            <string>Location Mode</string>
             <key>validTitles</key>
             <array>
                 <string>Use MinimalHUD preset</string>
