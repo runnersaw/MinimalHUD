@@ -1,7 +1,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 
 #import "include.h"
-#import "MHDPreferences.h"
+#import "minimalhud/MHDPreferences.h"
 
 @interface VolumeControl : NSObject
 + (id)sharedVolumeControl;
