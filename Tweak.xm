@@ -45,7 +45,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 %new
 - (BOOL)isVertical
 {
-	BOOL isCustomVertical = (preferences.locationMode == MHDLocationModeCustom && preferences.locationOrientation == MHDLocationOrientationVertical);
+	BOOL isCustomVertical = (preferences.locationMode == MHDLocationModeCustom && preferences.locationOrientationVertical);
 	BOOL isPresetVertical = (preferences.locationMode == MHDLocationModePreset && 
 		(preferences.locationPreset == MHDLocationPresetRight || preferences.locationPreset == MHDLocationPresetLeft || preferences.locationPreset == MHDLocationPresetVolume));
 	return (isCustomVertical || isPresetVertical);

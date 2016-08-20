@@ -29,9 +29,3 @@ typedef NS_ENUM(NSUInteger, MHDLocationPreset) {
 	MHDLocationPresetBottom,
 	MHDLocationPresetVolume
 };
-
-// LOCATION ORIENTATIONS
-typedef NS_ENUM(NSUInteger, MHDLocationOrientation) {
-	MHDLocationOrientationHorizontal,
-	MHDLocationOrientationVertical
-};

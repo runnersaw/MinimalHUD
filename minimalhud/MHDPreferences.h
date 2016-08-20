@@ -12,7 +12,7 @@
 @property (nonatomic, readonly) UIColor *backgroundColor;
 @property (nonatomic, readonly) MHDLocationMode locationMode;
 @property (nonatomic, readonly) MHDLocationPreset locationPreset;
-@property (nonatomic, readonly) MHDLocationOrientation locationOrientation;
+@property (nonatomic, readonly) BOOL locationOrientationVertical;
 @property (nonatomic, readonly) CGFloat locationX;
 @property (nonatomic, readonly) CGFloat locationY;
 
