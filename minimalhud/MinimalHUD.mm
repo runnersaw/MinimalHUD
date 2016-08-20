@@ -17,7 +17,10 @@
 
 	NSMutableArray *specs = [[NSMutableArray alloc] init];
 
+	// Enable button
 	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"MinimalHUD" target:self] retain]];
+
+	// Color settings
 	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode" target:self] retain]];
 	if (self.preferences.colorMode == MHDColorModeTheme)
 	{
@@ -27,6 +30,8 @@
 	{
 		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode_custom" target:self] retain]];
 	}
+
+	// Location settings
 	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode" target:self] retain]];
 	if (self.preferences.locationMode == MHDLocationModePreset)
 	{

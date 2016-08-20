@@ -156,6 +156,7 @@
 + (CGFloat)colorComponentFrom:(NSString *)string start:(NSUInteger)start length:(NSUInteger)length {
     NSString *substring = [string substringWithRange:NSMakeRange(start, length)];
     NSString *fullHex = length == 2 ? substring : [NSString stringWithFormat: @"%@%@", substring, substring];
+    
     unsigned int hexComponent;
     BOOL success = [[NSScanner scannerWithString:fullHex] scanHexInt:&hexComponent];
     if (!success)
