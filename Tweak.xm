@@ -34,7 +34,7 @@
 - (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
 
-#define PADDING 0.
+#define PADDING -2.
 
 static NSString *bundleId = @"com.runnersaw.hud";
 static NSString *notificationString = @"com.runnersaw.hud-preferencesChanged";
@@ -144,18 +144,18 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 	}
 	else if (preferences.locationMode == MHDLocationModeCustom)
 	{
-		CGFloat availableWidth = screenWidth - blockWidth;
+		CGFloat availableWidth = screenWidth - blockWidth + 2*PADDING;
 		CGFloat originX = 0;
 		if (preferences.locationX >= 0 && preferences.locationX <= 100)
 		{
-			originX = preferences.locationX * availableWidth / 100.;
+			originX = preferences.locationX * availableWidth / 100. - PADDING;
 		}
 
-		CGFloat availableHeight = screenHeight - blockHeight;
+		CGFloat availableHeight = screenHeight - blockHeight + 2*PADDING;
 		CGFloat originY = 0;
 		if (preferences.locationY >= 0 && preferences.locationY <= 100)
 		{
-			originY = preferences.locationY * availableHeight / 100.;
+			originY = preferences.locationY * availableHeight / 100. - PADDING;
 		}
 		[self placeHUDViewAtPoint:CGPointMake(originX, originY) vertical:[self isVertical]];
 	}
