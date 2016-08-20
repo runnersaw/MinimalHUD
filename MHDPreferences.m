@@ -37,13 +37,13 @@
 		else if (self.colorMode == MHDColorModeCustom)
 		{
 			NSString *sC = settings[@"startingColor"];
-			self.startingColor = sC ? colorFromString(sC) : [UIColor whiteColor];
+			self.startingColor = sC ? [self.class colorFromString:sC] : [UIColor whiteColor];
 
 			NSString *eC = settings[@"endingColor"];
-			self.endingColor = eC ? colorFromString(eC) : [UIColor whiteColor];
+			self.endingColor = eC ? [self.class colorFromString:eC] : [UIColor whiteColor];
 
 			NSString *bC = settings[@"backgroundColor"];
-			self.backgroundColor = bC ? colorFromString(bC) : [UIColor blackColor];
+			self.backgroundColor = bC ? [self.class colorFromString:bC] : [UIColor blackColor];
 		}
 
 		NSNumber *lM = settings[@"locationMode"];
@@ -60,13 +60,23 @@
 			self.locationOrientation = lO ? lO.unsignedIntegerValue : MHDLocationOrientationHorizontal;
 
 			NSString *lX = settings[@"locationX"];
-			self.locationX = lX ? cgFloatFromString(lX) : 0.0;
+			self.locationX = lX ? [self.class cgFloatFromString:lX] : 0.0;
 
 			NSString *lY = settings[@"locationY"];
-			self.locationY = lY ? cgFloatFromString(lY) : 0.0;
+			self.locationY = lY ? [self.class cgFloatFromString:lY] : 0.0;
 		}
 	}
 	return self;
+}
+
++ (UIColor *)colorFromString:(NSString *)string
+{
+	return [UIColor redColor];
+}
+
++ (CGFloat)cgFloatFromString:(NSString *)string
+{
+	return 0;
 }
 
 @end

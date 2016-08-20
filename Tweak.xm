@@ -282,16 +282,6 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 
 %end
 
-static UIColor *colorFromString(NSString *string)
-{
-	return [UIColor redColor];
-}
-
-static CGFloat cgFloatFromString(NSString *string)
-{
-	return 0;
-}
-
 static void loadPrefs()
 {
 	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", bundleId];
