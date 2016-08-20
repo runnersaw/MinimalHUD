@@ -34,7 +34,7 @@
 - (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
 
-#define PADDING -3.
+#define PADDING -2.
 
 static NSString *bundleId = @"com.runnersaw.hud";
 static NSString *notificationString = @"com.runnersaw.hud-preferencesChanged";
