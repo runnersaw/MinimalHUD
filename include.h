@@ -1,4 +1,6 @@
 
+#define PREFERENCES_PATH @"/var/mobile/Library/Preferences/com.runnersaw.hud.plist"
+
 // COLOR MODES
 typedef NS_ENUM(NSUInteger, MHDColorMode) {
 	MHDColorModeTheme,

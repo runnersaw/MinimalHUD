@@ -299,8 +299,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 
 static void loadPrefs()
 {
-	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", bundleId];
-	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:path];
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
 	preferences = [[MHDPreferences alloc] initWithSettings:settings];
 }
  

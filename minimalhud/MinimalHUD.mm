@@ -1,5 +1,6 @@
 #import <Preferences/Preferences.h>
 
+#import "../include.h"
 #import "MHDPreferences.h"
 
 @interface MinimalHUDListController : PSListController
@@ -11,10 +12,9 @@
 @implementation MinimalHUDListController
 
 - (id)specifiers {
-	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
-	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:path];
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
 	self.preferences = [[MHDPreferences alloc] initWithSettings:settings];
-	
+
 	NSMutableArray *specs = [[NSMutableArray alloc] init];
 
 	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"MinimalHUD" target:self] retain]];
@@ -43,14 +43,12 @@
 }
 
 - (id)readPreferenceValue:(PSSpecifier*)specifier {
-	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
-	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:path];
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
 	return (settings[specifier.properties[@"key"]]) ?: specifier.properties[@"default"];
 }
 
 - (void)setPreferenceValue:(id)value forSpecifier:(PSSpecifier*)specifier {
-	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
-	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:path];
+	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
 	[settings setObject:value forKey:specifier.properties[@"key"]];
 	[settings writeToFile:path atomically:YES];
 
