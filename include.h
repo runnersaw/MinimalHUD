@@ -30,6 +30,6 @@ typedef NS_ENUM(NSUInteger, MHDLocationPreset) {
 
 // LOCATION ORIENTATIONS
 typedef NS_ENUM(NSUInteger, MHDLocationOrientation) {
-	MHDLocationOrientationVertical,
-	MHDLocationOrientationHorizontal
+	MHDLocationOrientationHorizontal,
+	MHDLocationOrientationVertical
 };

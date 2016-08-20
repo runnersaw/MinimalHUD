@@ -12,7 +12,7 @@
         </dict>
         <dict>
             <key>cell</key>
-            <string>PSStaticTextCell</string>
+            <string>PSGroupCell</string>
             <key>label</key>
             <string>You can enter custom colors for the HUD below. You may enter colors in hex formats #RGB, #ARGB, #RRGGBB, and #AARRGGBB with or without a '#'. You may also enter common colors with their English name. All possible colors you can enter are "red", "orange", "yellow", "green", "blue", "purple", "black", and "white". If you enter text that MinimalHUD can't parse, it will revert to its default color.</string>
         </dict>

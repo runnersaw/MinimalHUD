@@ -12,9 +12,21 @@
         </dict>
         <dict>
             <key>cell</key>
-            <string>PSStaticTextCell</string>
+            <string>PSGroupCell</string>
             <key>label</key>
             <string>You can enter a custom location for the HUD below. You must enter a numeric value between 0 and 100 inclusive. This will specify the percentage of the screen that the HUD will be placed at. For example, 50% would be the center of the screen. If you enter a number outside of the range or text that MinimalHUD can't parse, the HUD will revert to its default location.</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSSwitchCell</string>
+            <key>default</key>
+            <true/>
+            <key>defaults</key>
+            <string>com.runnersaw.hud</string>
+            <key>key</key>
+            <string>locationOrientation</string>
+            <key>label</key>
+            <string>Place HUD Verticallly</string>
         </dict>
         <dict>
             <key>cell</key>

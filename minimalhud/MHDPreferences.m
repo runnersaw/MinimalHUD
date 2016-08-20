@@ -100,7 +100,7 @@
 	};
 
 	NSString *finalStr = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	UIColor *color = colors[finalStr];
+	UIColor *color = colors[finalStr.lowercaseString];
 	if (color)
 	{
 		return color;

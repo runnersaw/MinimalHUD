@@ -11,6 +11,10 @@
 @implementation MinimalHUDListController
 
 - (id)specifiers {
+	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
+	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:path];
+	self.preferences = [[MHDPreferences alloc] initWithSettings:settings];
+	
 	NSMutableArray *specs = [[NSMutableArray alloc] init];
 
 	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"MinimalHUD" target:self] retain]];
