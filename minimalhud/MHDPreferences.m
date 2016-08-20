@@ -88,7 +88,7 @@
 
 + (UIColor *)colorFromString:(NSString *)string
 {
-	NSDictionary<NSString *, UIColor *> *colors = @{
+	NSDictionary *colors = @{
 		@"red" : [UIColor redColor],
 		@"orange" : [UIColor orangeColor],
 		@"yellow" : [UIColor yellowColor],
