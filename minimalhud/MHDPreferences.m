@@ -97,7 +97,7 @@
 		@"purple" : [UIColor purpleColor],
 		@"black" : [UIColor blackColor],
 		@"white" : [UIColor whiteColor]
-	}
+	};
 
 	NSString *finalStr = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	UIColor *color = colors[finalStr];
@@ -165,7 +165,7 @@
 + (CGFloat)cgFloatFromString:(NSString *)string
 {
     double doubleValue;
-    BOOL success = [[NSScanner scannerWithString:string] scanHexInt:&doubleValue];
+    BOOL success = [[NSScanner scannerWithString:string] scanDouble:&doubleValue];
     if (!success)
     {
     	return 0.;
