@@ -51,7 +51,7 @@
 	[settings setObject:value forKey:specifier.properties[@"key"]];
 	[settings writeToFile:path atomically:YES];
 
-	self.preferences = [[%c(MHDPreferences) alloc] initWithSettings:settings];
+	self.preferences = [[MHDPreferences alloc] initWithSettings:settings];
 	[self reloadSpecifiers];
 
 	CFStringRef notificationName = (CFStringRef)specifier.properties[@"PostNotification"];
