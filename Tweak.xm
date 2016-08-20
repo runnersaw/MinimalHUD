@@ -144,7 +144,20 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 	}
 	else if (preferences.locationMode == MHDLocationModeCustom)
 	{
-		[self placeHUDViewAtPoint:CGPointMake(preferences.locationX, preferences.locationY) vertical:[self isVertical]];
+		CGFloat availableWidth = screenWidth - blockWidth;
+		CGFloat originX = 0;
+		if (preferences.locationX >= 0 && preferences.locationX <= 100)
+		{
+			originX = preferences.locationX * availableWidth / 100.;
+		}
+
+		CGFloat availableHeight = screenHeight - blockHeight;
+		CGFloat originY = 0;
+		if (preferences.locationY >= 0 && preferences.locationY <= 100)
+		{
+			originY = preferences.locationY * availableHeight / 100.;
+		}
+		[self placeHUDViewAtPoint:CGPointMake(originX, originY) vertical:[self isVertical]];
 	}
 }
 

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+        <dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+            <key>label</key>
+            <string>MinimalHUD Custom Location</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSStaticTextCell</string>
+            <key>label</key>
+            <string>You can enter a custom location for the HUD below. You must enter a numeric value between 0 and 100 inclusive. This will specify the percentage of the screen that the HUD will be placed at. For example, 50% would be the center of the screen. If you enter a number outside of the range or text that MinimalHUD can't parse, the HUD will revert to its default location.</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSEditTextCell</string>
+            <key>defaults</key>
+            <string>com.runnersaw.hud</string>
+            <key>default</key>
+            <string>0</string>
+            <key>PostNotification</key>
+            <string>com.runnersaw.hud-preferencesChanged</string>
+            <key>get</key>
+            <string>readPreferenceValue:</string>
+            <key>set</key>
+            <string>setPreferenceValue:forSpecifier:</string>
+            <key>key</key>
+            <string>locationX</string>
+            <key>label</key>
+            <string>X location of HUD (in percent)</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSEditTextCell</string>
+            <key>defaults</key>
+            <string>com.runnersaw.hud</string>
+            <key>default</key>
+            <string>0</string>
+            <key>PostNotification</key>
+            <string>com.runnersaw.hud-preferencesChanged</string>
+            <key>get</key>
+            <string>readPreferenceValue:</string>
+            <key>set</key>
+            <string>setPreferenceValue:forSpecifier:</string>
+            <key>key</key>
+            <string>locationY</string>
+            <key>label</key>
+            <string>Y location of HUD (in percent)</string>
+        </dict>
+	</array>
+	<key>title</key>
+	<string>MinimalHUD</string>
+</dict>
+</plist>

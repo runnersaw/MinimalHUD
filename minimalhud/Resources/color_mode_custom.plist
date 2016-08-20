@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+        <dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+            <key>label</key>
+            <string>MinimalHUD Custom Color</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSStaticTextCell</string>
+            <key>label</key>
+            <string>You can enter custom colors for the HUD below. You may enter colors in hex formats #RGB, #ARGB, #RRGGBB, and #AARRGGBB with or without a '#'. You may also enter common colors with their English name. All possible colors you can enter are "red", "orange", "yellow", "green", "blue", "purple", "black", and "white". If you enter text that MinimalHUD can't parse, it will revert to its default color.</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSEditTextCell</string>
+            <key>defaults</key>
+            <string>com.runnersaw.hud</string>
+            <key>default</key>
+            <string>#FFFFFF</string>
+            <key>PostNotification</key>
+            <string>com.runnersaw.hud-preferencesChanged</string>
+            <key>get</key>
+            <string>readPreferenceValue:</string>
+            <key>set</key>
+            <string>setPreferenceValue:forSpecifier:</string>
+            <key>key</key>
+            <string>startingColor</string>
+            <key>label</key>
+            <string>Starting Color</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSEditTextCell</string>
+            <key>defaults</key>
+            <string>com.runnersaw.hud</string>
+            <key>default</key>
+            <string>#FFFFFF</string>
+            <key>PostNotification</key>
+            <string>com.runnersaw.hud-preferencesChanged</string>
+            <key>get</key>
+            <string>readPreferenceValue:</string>
+            <key>set</key>
+            <string>setPreferenceValue:forSpecifier:</string>
+            <key>key</key>
+            <string>endingColor</string>
+            <key>label</key>
+            <string>Ending Color</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSEditTextCell</string>
+            <key>defaults</key>
+            <string>com.runnersaw.hud</string>
+            <key>default</key>
+            <string>#000000</string>
+            <key>PostNotification</key>
+            <string>com.runnersaw.hud-preferencesChanged</string>
+            <key>get</key>
+            <string>readPreferenceValue:</string>
+            <key>set</key>
+            <string>setPreferenceValue:forSpecifier:</string>
+            <key>key</key>
+            <string>backgroundColor</string>
+            <key>label</key>
+            <string>Background Color</string>
+        </dict>
+	</array>
+	<key>title</key>
+	<string>MinimalHUD</string>
+</dict>
+</plist>

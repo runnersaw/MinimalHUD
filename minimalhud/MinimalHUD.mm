@@ -1,7 +1,5 @@
 #import <Preferences/Preferences.h>
 
-#import "MHDPreferences.h"
-
 @interface MinimalHUDListController : PSListController
 
 @property (nonatomic, strong) MHDPreferences *preferences;
@@ -41,7 +39,6 @@
 - (id)readPreferenceValue:(PSSpecifier*)specifier {
 	NSString *path = [NSString stringWithFormat:@"/var/mobile/Library/Preferences/%@.plist", specifier.properties[@"defaults"]];
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:path];
-	NSLog(@"settings %@", settings);
 	return (settings[specifier.properties[@"key"]]) ?: specifier.properties[@"default"];
 }
 
