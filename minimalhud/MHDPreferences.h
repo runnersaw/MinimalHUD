@@ -18,4 +18,8 @@
 
 - (instancetype)initWithSettings:(NSDictionary *)settings;
 
+- (void)updateValue:(id)value forKey:(NSString *)key;
+
+- (NSDictionary *)dictionaryRepresentation;
+
 @end

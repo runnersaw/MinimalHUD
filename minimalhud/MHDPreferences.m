@@ -7,6 +7,9 @@
 @property (nonatomic, readwrite) BOOL enabled;
 @property (nonatomic, readwrite) MHDColorMode colorMode;
 @property (nonatomic, readwrite) MHDColorTheme colorTheme;
+@property (nonatomic, copy) NSString *startingColorString;
+@property (nonatomic, copy) NSString *endingColorString;
+@property (nonatomic, copy) NSString *backgroundColorString;
 @property (nonatomic, strong) UIColor *startingColor;
 @property (nonatomic, strong) UIColor *endingColor;
 @property (nonatomic, strong) UIColor *backgroundColor;
@@ -19,96 +22,6 @@
 @end
 
 @implementation MHDPreferences
-
-- (instancetype)initWithSettings:(NSDictionary *)settings
-{
-	self = [super init];
-	if (self)
-	{
-		NSNumber *e = settings[@"enabled"];
-		self.enabled = e ? e.boolValue : YES;
-
-		NSNumber *cM = settings[@"colorMode"];
-		self.colorMode = cM ? cM.unsignedIntegerValue : MHDColorModeTheme;
-
-		if (self.colorMode == MHDColorModeTheme)
-		{
-			NSNumber *cT = settings[@"colorTheme"];
-			self.colorTheme = cT ? cT.unsignedIntegerValue : MHDColorThemeWarm;
-		}
-		else if (self.colorMode == MHDColorModeCustom)
-		{
-			NSString *sC = settings[@"startingColor"];
-			UIColor *sColor = nil;
-			if (sC)
-			{
-				sColor = [self.class colorFromString:sC];
-			}
-			self.startingColor = sColor ? : [UIColor whiteColor];
-
-			NSString *eC = settings[@"endingColor"];
-			UIColor *eColor = nil;
-			if (eC)
-			{
-				eColor = [self.class colorFromString:eC];
-			}
-			self.endingColor = eColor ? : [UIColor whiteColor];
-
-			NSString *bC = settings[@"backgroundColor"];
-			UIColor *bColor = nil;
-			if (bC)
-			{
-				bColor = [self.class colorFromString:bC];
-			}
-			self.backgroundColor = bColor ? : [UIColor blackColor];
-		}
-
-		NSNumber *lM = settings[@"locationMode"];
-		self.locationMode = lM ? lM.unsignedIntegerValue : MHDLocationModePreset;
-
-		if (self.locationMode == MHDLocationModePreset)
-		{
-			NSNumber *lP = settings[@"locationPreset"];
-			self.locationPreset = lP ? lP.unsignedIntegerValue : MHDLocationPresetTop;
-		}
-		else if (self.locationMode == MHDLocationModeCustom)
-		{
-			NSNumber *lO = settings[@"locationOrientation"];
-			self.locationOrientationVertical = lO ? lO.boolValue : NO;
-
-			NSString *lX = settings[@"locationX"];
-			self.locationX = lX ? [self.class cgFloatFromString:lX] : 0.0;
-
-			NSString *lY = settings[@"locationY"];
-			self.locationY = lY ? [self.class cgFloatFromString:lY] : 0.0;
-		}
-	}
-	return self;
-}
-
-+ (UIColor *)colorFromString:(NSString *)string
-{
-	NSDictionary *colors = @{
-		@"red" : [UIColor redColor],
-		@"orange" : [UIColor orangeColor],
-		@"yellow" : [UIColor yellowColor],
-		@"green" : [UIColor greenColor],
-		@"blue" : [UIColor blueColor],
-		@"purple" : [UIColor purpleColor],
-		@"black" : [UIColor blackColor],
-		@"white" : [UIColor whiteColor]
-	};
-
-	NSString *finalStr = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	UIColor *color = colors[finalStr.lowercaseString];
-	if (color)
-	{
-		NSLog(@"found color %@", finalStr);
-		return color;
-	}
-
-	return [self colorWithHexString:finalStr];
-}
 
 + (UIColor *)colorWithHexString:(NSString *)hexString
 {
@@ -175,6 +88,109 @@
     	return 0.;
     }
     return (CGFloat)doubleValue;
+}
+
+- (instancetype)initWithSettings:(NSDictionary *)settings
+{
+	self = [super init];
+	if (self)
+	{
+		NSNumber *e = settings[@"enabled"];
+		self.enabled = e ? e.boolValue : YES;
+
+		NSNumber *cM = settings[@"colorMode"];
+		self.colorMode = cM ? cM.unsignedIntegerValue : MHDColorModeTheme;
+
+		NSNumber *cT = settings[@"colorTheme"];
+		self.colorTheme = cT ? cT.unsignedIntegerValue : MHDColorThemeWarm;
+
+		self.startingColorString = settings[@"startingColor"];
+		UIColor *sColor = nil;
+		if (self.startingColorString)
+		{
+			sColor = [self.class colorFromString:self.startingColorString];
+		}
+		self.startingColor = sColor ? : [UIColor whiteColor];
+
+		self.endingColorString = settings[@"endingColor"];
+		UIColor *eColor = nil;
+		if (self.endingColorString)
+		{
+			eColor = [self.class colorFromString:self.endingColorString];
+		}
+		self.endingColor = eColor ? : [UIColor whiteColor];
+
+		self.backgroundColorString = settings[@"backgroundColor"];
+		UIColor *bColor = nil;
+		if (self.backgroundColorString)
+		{
+			bColor = [self.class colorFromString:self.backgroundColorString];
+		}
+		self.backgroundColor = bColor ? : [UIColor blackColor];
+
+		NSNumber *lM = settings[@"locationMode"];
+		self.locationMode = lM ? lM.unsignedIntegerValue : MHDLocationModePreset;
+
+		NSNumber *lP = settings[@"locationPreset"];
+		self.locationPreset = lP ? lP.unsignedIntegerValue : MHDLocationPresetTop;
+
+		NSNumber *lO = settings[@"locationOrientation"];
+		self.locationOrientationVertical = lO ? lO.boolValue : NO;
+
+		NSString *lX = settings[@"locationX"];
+		self.locationX = lX ? [self.class cgFloatFromString:lX] : 0.0;
+
+		NSString *lY = settings[@"locationY"];
+		self.locationY = lY ? [self.class cgFloatFromString:lY] : 0.0;
+	}
+	return self;
+}
+
++ (UIColor *)colorFromString:(NSString *)string
+{
+	NSDictionary *colors = @{
+		@"red" : [UIColor redColor],
+		@"orange" : [UIColor orangeColor],
+		@"yellow" : [UIColor yellowColor],
+		@"green" : [UIColor greenColor],
+		@"blue" : [UIColor blueColor],
+		@"purple" : [UIColor purpleColor],
+		@"black" : [UIColor blackColor],
+		@"white" : [UIColor whiteColor]
+	};
+
+	NSString *finalStr = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	UIColor *color = colors[finalStr.lowercaseString];
+	if (color)
+	{
+		NSLog(@"found color %@", finalStr);
+		return color;
+	}
+
+	return [self colorWithHexString:finalStr];
+}
+
+- (void)updateValue:(id)value forKey:(NSString *)key
+{
+	NSLog(@"%@ %@ %@", value, [value class], key);
+	[self setValue:value forKey:key];
+}
+
+- (NSDictionary *)dictionaryRepresentation
+{
+	return @{
+		@"enabled" : @(self.enabled),
+		@"colorMode" : @(self.colorMode),
+		@"colorTheme" : @(self.colorTheme),
+		@"startingColor" : self.startingColorString,
+		@"endingColor" : self.endingColorString,
+		@"backgroundColor" : self.backgroundColorString,
+		@"locationMode" : @(self.locationMode),
+		@"locationPreset" : @(self.locationPreset),
+		@"locationOrientation" : @(self.locationOrientationVertical),
+		@"locationX" : @(self.locationX),
+		@"locationY" : @(self.locationY)
+	};
 }
 
 @end

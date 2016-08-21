@@ -11,6 +11,16 @@
 
 @implementation MinimalHUDListController
 
+- (MHDPreferences *)preferences
+{
+	if (!_preferences)
+	{
+		NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
+		_preferences = [[MHDPreferences alloc] initWithSettings:settings];
+	}
+	return _preferences;
+}
+
 - (id)specifiers {
 	NSMutableArray *specs = [[NSMutableArray alloc] init];
 
@@ -38,19 +48,8 @@
 }
 
 - (void)setPreferenceValue:(id)value forSpecifier:(PSSpecifier*)specifier {
-	NSLog(@"%@ %@", value, specifier);
-	if (!value)
-	{
-		return;
-	}
-
-	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
-	[settings setObject:value forKey:specifier.properties[@"key"]];
-	NSLog(@"saving settings %@", settings);
-	[settings writeToFile:PREFERENCES_PATH atomically:YES];
-
-	self.preferences = [[MHDPreferences alloc] initWithSettings:settings];
-	[self reloadSpecifiers];
+	[self.preferences updateValue:value forKey:specifier.properties[@"key"]];
+	[self.preferences.dictionaryRepresentation writeToFile:PREFERENCES_PATH atomically:NO];
 
 	CFStringRef notificationName = (CFStringRef)specifier.properties[@"PostNotification"];
 	if (notificationName) {
