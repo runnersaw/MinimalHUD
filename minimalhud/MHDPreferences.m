@@ -23,6 +23,30 @@
 
 @implementation MHDPreferences
 
++ (UIColor *)colorFromString:(NSString *)string
+{
+	NSDictionary *colors = @{
+		@"red" : [UIColor redColor],
+		@"orange" : [UIColor orangeColor],
+		@"yellow" : [UIColor yellowColor],
+		@"green" : [UIColor greenColor],
+		@"blue" : [UIColor blueColor],
+		@"purple" : [UIColor purpleColor],
+		@"black" : [UIColor blackColor],
+		@"white" : [UIColor whiteColor]
+	};
+
+	NSString *finalStr = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	UIColor *color = colors[finalStr.lowercaseString];
+	if (color)
+	{
+		NSLog(@"found color %@", finalStr);
+		return color;
+	}
+
+	return [self colorWithHexString:finalStr];
+}
+
 + (UIColor *)colorWithHexString:(NSString *)hexString
 {
     NSString *colorString = [[hexString stringByReplacingOccurrencesOfString: @"#" withString: @""] uppercaseString];
@@ -95,6 +119,7 @@
 	self = [super init];
 	if (self)
 	{
+		NSLog(@"initWithSettings %@");
 		NSNumber *e = settings[@"enabled"];
 		self.enabled = e ? e.boolValue : YES;
 
@@ -104,7 +129,7 @@
 		NSNumber *cT = settings[@"colorTheme"];
 		self.colorTheme = cT ? cT.unsignedIntegerValue : MHDColorThemeWarm;
 
-		self.startingColorString = settings[@"startingColor"];
+		self.startingColorString = settings[@"startingColorString"];
 		UIColor *sColor = nil;
 		if (self.startingColorString)
 		{
@@ -112,7 +137,7 @@
 		}
 		self.startingColor = sColor ? : [UIColor whiteColor];
 
-		self.endingColorString = settings[@"endingColor"];
+		self.endingColorString = settings[@"endingColorString"];
 		UIColor *eColor = nil;
 		if (self.endingColorString)
 		{
@@ -120,7 +145,7 @@
 		}
 		self.endingColor = eColor ? : [UIColor whiteColor];
 
-		self.backgroundColorString = settings[@"backgroundColor"];
+		self.backgroundColorString = settings[@"backgroundColorString"];
 		UIColor *bColor = nil;
 		if (self.backgroundColorString)
 		{
@@ -144,30 +169,6 @@
 		self.locationY = lY ? [self.class cgFloatFromString:lY] : 0.0;
 	}
 	return self;
-}
-
-+ (UIColor *)colorFromString:(NSString *)string
-{
-	NSDictionary *colors = @{
-		@"red" : [UIColor redColor],
-		@"orange" : [UIColor orangeColor],
-		@"yellow" : [UIColor yellowColor],
-		@"green" : [UIColor greenColor],
-		@"blue" : [UIColor blueColor],
-		@"purple" : [UIColor purpleColor],
-		@"black" : [UIColor blackColor],
-		@"white" : [UIColor whiteColor]
-	};
-
-	NSString *finalStr = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	UIColor *color = colors[finalStr.lowercaseString];
-	if (color)
-	{
-		NSLog(@"found color %@", finalStr);
-		return color;
-	}
-
-	return [self colorWithHexString:finalStr];
 }
 
 - (void)updateValue:(id)value forKey:(NSString *)key

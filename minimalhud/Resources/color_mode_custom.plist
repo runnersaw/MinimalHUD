@@ -30,7 +30,7 @@
             <key>set</key>
             <string>setPreferenceValue:forSpecifier:</string>
             <key>key</key>
-            <string>startingColor</string>
+            <string>startingColorString</string>
             <key>label</key>
             <string>Starting Color</string>
         </dict>
@@ -48,7 +48,7 @@
             <key>set</key>
             <string>setPreferenceValue:forSpecifier:</string>
             <key>key</key>
-            <string>endingColor</string>
+            <string>endingColorString</string>
             <key>label</key>
             <string>Ending Color</string>
         </dict>
@@ -66,7 +66,7 @@
             <key>set</key>
             <string>setPreferenceValue:forSpecifier:</string>
             <key>key</key>
-            <string>backgroundColor</string>
+            <string>backgroundColorString</string>
             <key>label</key>
             <string>Background Color</string>
         </dict>
