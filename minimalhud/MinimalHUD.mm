@@ -46,6 +46,7 @@
 
 	NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
 	[settings setObject:value forKey:specifier.properties[@"key"]];
+	NSLog(@"saving settings %@", settings);
 	[settings writeToFile:PREFERENCES_PATH atomically:YES];
 
 	self.preferences = [[MHDPreferences alloc] initWithSettings:settings];
