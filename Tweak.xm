@@ -36,9 +36,8 @@
 
 #define PADDING -2.
 
-static NSString *bundleId = @"com.runnersaw.hud";
 static NSString *notificationString = @"com.runnersaw.hud-preferencesChanged";
-static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:nil];
+static MHDPreferences *preferences = nil;
 
 %hook SBHUDController
 
