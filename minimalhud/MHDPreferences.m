@@ -119,7 +119,7 @@
 	self = [super init];
 	if (self)
 	{
-		NSLog(@"initWithSettings %@");
+		NSLog(@"initWithSettings %@", settings);
 		NSNumber *e = settings[@"enabled"];
 		self.enabled = e ? e.boolValue : YES;
 
