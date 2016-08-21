@@ -51,7 +51,8 @@
 {
     NSString *colorString = [[hexString stringByReplacingOccurrencesOfString: @"#" withString: @""] uppercaseString];
     CGFloat alpha, red, blue, green;
-    switch ([colorString length]) {
+    switch ([colorString length])
+    {
         case 3: // #RGB
             alpha = 1.0f;
             red = [self colorComponentFrom:colorString start:0 length:1];
@@ -129,28 +130,16 @@
 		NSNumber *cT = settings[@"colorTheme"];
 		self.colorTheme = cT ? cT.unsignedIntegerValue : MHDColorThemeWarm;
 
-		self.startingColorString = settings[@"startingColorString"];
-		UIColor *sColor = nil;
-		if (self.startingColorString)
-		{
-			sColor = [self.class colorFromString:self.startingColorString];
-		}
+		self.startingColorString = settings[@"startingColorString"] ?: @"";
+		UIColor *sColor = [self.class colorFromString:self.startingColorString];
 		self.startingColor = sColor ? : [UIColor whiteColor];
 
-		self.endingColorString = settings[@"endingColorString"];
-		UIColor *eColor = nil;
-		if (self.endingColorString)
-		{
-			eColor = [self.class colorFromString:self.endingColorString];
-		}
+		self.endingColorString = settings[@"endingColorString"] ?: @"";
+		UIColor *eColor = [self.class colorFromString:self.endingColorString];
 		self.endingColor = eColor ? : [UIColor whiteColor];
 
-		self.backgroundColorString = settings[@"backgroundColorString"];
-		UIColor *bColor = nil;
-		if (self.backgroundColorString)
-		{
-			bColor = [self.class colorFromString:self.backgroundColorString];
-		}
+		self.backgroundColorString = settings[@"backgroundColorString"] ?: @"";
+		UIColor *bColor = [self.class colorFromString:self.backgroundColorString];
 		self.backgroundColor = bColor ? : [UIColor blackColor];
 
 		NSNumber *lM = settings[@"locationMode"];
@@ -183,9 +172,9 @@
 		@"enabled" : @(self.enabled),
 		@"colorMode" : @(self.colorMode),
 		@"colorTheme" : @(self.colorTheme),
-		@"startingColor" : self.startingColorString ? : @"",
-		@"endingColor" : self.endingColorString ? : @"",
-		@"backgroundColor" : self.backgroundColorString ? : @"",
+		@"startingColorString" : self.startingColorString ? : @"",
+		@"endingColorString" : self.endingColorString ? : @"",
+		@"backgroundColorString" : self.backgroundColorString ? : @"",
 		@"locationMode" : @(self.locationMode),
 		@"locationPreset" : @(self.locationPreset),
 		@"locationOrientationVertical" : @(self.locationOrientationVertical),
