@@ -29,13 +29,25 @@
 
 	// Color settings
 	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode" target:self] retain]];
-	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode_theme" target:self] retain]];
-	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode_custom" target:self] retain]];
+	if (self.preferences.colorMode == MHDColorModeTheme)
+	{
+		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode_theme" target:self] retain]];
+	}
+	else
+	{
+		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"color_mode_custom" target:self] retain]];
+	}
 
-	// Location settings
+	// Location Settings
 	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode" target:self] retain]];
-	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode_preset" target:self] retain]];
-	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode_custom" target:self] retain]];
+	if (self.preferences.locationMode == MHDLocationModePreset)
+	{
+		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode_preset" target:self] retain]];
+	}
+	else
+	{
+		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode_custom" target:self] retain]];
+	}
 
 	_specifiers = specs;
 
@@ -49,6 +61,8 @@
 - (void)setPreferenceValue:(id)value forSpecifier:(PSSpecifier*)specifier {
 	[self.preferences updateValue:value forKey:specifier.properties[@"key"]];
 	[self.preferences.dictionaryRepresentation writeToFile:PREFERENCES_PATH atomically:NO];
+
+	[self reloadSpecifiers];
 
 	CFStringRef notificationName = (CFStringRef)@"com.runnersaw.hud-preferencesChanged";
 	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), notificationName, NULL, NULL, YES);
