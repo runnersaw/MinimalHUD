@@ -48,8 +48,6 @@
 
 - (void)setPreferenceValue:(id)value forSpecifier:(PSSpecifier*)specifier {
 	[self.preferences updateValue:value forKey:specifier.properties[@"key"]];
-	NSLog(@"updated value");
-	NSLog(@"updated value %@", self.preferences.dictionaryRepresentation);
 	[self.preferences.dictionaryRepresentation writeToFile:PREFERENCES_PATH atomically:NO];
 
 	CFStringRef notificationName = (CFStringRef)@"com.runnersaw.hud-preferencesChanged";

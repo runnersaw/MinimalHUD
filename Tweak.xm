@@ -287,8 +287,6 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 		CGFloat blue = (endingBlue - startingBlue) * arg1 + startingBlue;
 		CGFloat alpha = (endingAlpha - startingAlpha) * arg1 + startingAlpha;
 
-		NSLog(@"block color %@ %@ %@ %@", @(red), @(green), @(blue), @(alpha));
-
 		return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 	}
 
@@ -300,6 +298,7 @@ static MHDPreferences *preferences = [[MHDPreferences alloc] initWithSettings:ni
 static void loadPrefs()
 {
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
+	NSLog(@"initting with settings %@", settings);
 	preferences = [[MHDPreferences alloc] initWithSettings:settings];
 }
  

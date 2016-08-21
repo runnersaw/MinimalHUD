@@ -42,7 +42,6 @@
 	UIColor *color = colors[finalStr.lowercaseString];
 	if (color)
 	{
-		NSLog(@"found color %@", finalStr);
 		return color;
 	}
 
@@ -51,7 +50,7 @@
 
 + (UIColor *)colorWithHexString:(NSString *)hexString
 {
-    NSString *colorString = [[hexString stringByReplacingOccurrencesOfString: @"#" withString: @""] uppercaseString];
+    NSString *colorString = [[hexString stringByReplacingOccurrencesOfString:@"#" withString:@""] uppercaseString];
     CGFloat alpha, red, blue, green;
     switch ([colorString length])
     {
@@ -83,9 +82,7 @@
         	return nil;
     }
 
-    NSLog(@"%@ %@ %@ %@", @(red), @(green), @(blue), @(alpha));
-
-    if (red == NOT_FOUND || green == NOT_FOUND || blue == NOT_FOUND)
+    if (red == NOT_FOUND || green == NOT_FOUND || blue == NOT_FOUND || alpha == NOT_FOUND)
     {
     	return nil;
     }
@@ -95,8 +92,7 @@
 
 + (CGFloat)colorComponentFrom:(NSString *)string start:(NSUInteger)start length:(NSUInteger)length {
     NSString *substring = [string substringWithRange:NSMakeRange(start, length)];
-
-    NSString *fullHex = length == 2 ? substring : [NSString stringWithFormat: @"%@%@", substring, substring];
+    NSString *fullHex = length == 2 ? substring : [NSString stringWithFormat:@"%@%@", substring, substring];
     unsigned int hexComponent;
     BOOL success = [[NSScanner scannerWithString:fullHex] scanHexInt:&hexComponent];
     if (!success)
@@ -109,7 +105,8 @@
 + (CGFloat)cgFloatFromString:(NSString *)string
 {
     double doubleValue;
-    BOOL success = [[NSScanner scannerWithString:string] scanDouble:&doubleValue];
+    NSString *finalStr = [string stringByReplacingOccurrencesOfString:@"%" withString:@""];
+    BOOL success = [[NSScanner scannerWithString:finalStr] scanDouble:&doubleValue];
     if (!success)
     {
     	return 0.;
@@ -122,7 +119,6 @@
 	self = [super init];
 	if (self)
 	{
-		NSLog(@"initWithSettings %@", settings);
 		NSNumber *e = settings[@"enabled"];
 		self.enabled = e ? e.boolValue : YES;
 
@@ -164,7 +160,6 @@
 
 - (void)updateValue:(id)value forKey:(NSString *)key
 {
-	NSLog(@"%@ %@ %@", value, [value class], key);
 	[self setValue:value forKey:key];
 }
 
