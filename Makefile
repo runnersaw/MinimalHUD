@@ -8,10 +8,10 @@ ADDITIONAL_OBJCFLAGS = -fobjc-arc
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = MinimalHUD
-MinimalHUD_FILES = Tweak.xm $(wildcard minimalhud/*.m)
-MinimalHUD_FRAMEWORKS = UIKit CoreGraphics
-MinimalHUD_LDFLAGS += -Wl,-segalign,4000
+TWEAK_NAME = HUD
+HUD_FILES = Tweak.xm $(wildcard minimalhud/*.m)
+HUD_FRAMEWORKS = UIKit CoreGraphics
+HUD_LDFLAGS += -Wl,-segalign,4000
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
