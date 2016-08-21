@@ -7,12 +7,12 @@ TARGET_IPHONEOS_DEPLOYMENT_VERSION := 9.0
 
 include $(THEOS)/makefiles/common.mk
 
-BUNDLE_NAME = MinimalHUD
-MinimalHUD_FILES = MinimalHUD.mm $(wildcard *.m)
-MinimalHUD_INSTALL_PATH = /Library/PreferenceBundles
-MinimalHUD_FRAMEWORKS = UIKit
-MinimalHUD_PRIVATE_FRAMEWORKS = Preferences
-MinimalHUD_LDFLAGS += -Wl,-segalign,4000
+BUNDLE_NAME = MinimalHUDPreferences
+MinimalHUDPreferences_FILES = MinimalHUD.mm $(wildcard *.m)
+MinimalHUDPreferences_INSTALL_PATH = /Library/PreferenceBundles
+MinimalHUDPreferences_FRAMEWORKS = UIKit
+MinimalHUDPreferences_PRIVATE_FRAMEWORKS = Preferences
+MinimalHUDPreferences_LDFLAGS += -Wl,-segalign,4000
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 
