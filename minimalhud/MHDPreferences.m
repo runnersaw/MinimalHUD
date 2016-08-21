@@ -18,6 +18,8 @@
 @property (nonatomic, readwrite) BOOL locationOrientationVertical;
 @property (nonatomic, readwrite) CGFloat locationX;
 @property (nonatomic, readwrite) CGFloat locationY;
+@property (nonatomic, copy) NSString *locationXString;
+@property (nonatomic, copy) NSString *locationYString;
 
 @end
 
@@ -122,51 +124,40 @@
 	{
 		NSLog(@"initWithSettings %@", settings);
 		NSNumber *e = settings[@"enabled"];
-		NSLog(@"enabled %@", e);
 		self.enabled = e ? e.boolValue : YES;
 
 		NSNumber *cM = settings[@"colorMode"];
-		NSLog(@"colorMode %@", cM);
 		self.colorMode = cM ? cM.unsignedIntegerValue : MHDColorModeTheme;
 
 		NSNumber *cT = settings[@"colorTheme"];
-		NSLog(@"colorTheme %@", cT);
 		self.colorTheme = cT ? cT.unsignedIntegerValue : MHDColorThemeWarm;
 
 		self.startingColorString = settings[@"startingColorString"] ?: @"";
 		UIColor *sColor = [self.class colorFromString:self.startingColorString];
-		NSLog(@"startingColorString %@", self.startingColorString);
 		self.startingColor = sColor ? : [UIColor whiteColor];
 
 		self.endingColorString = settings[@"endingColorString"] ?: @"";
 		UIColor *eColor = [self.class colorFromString:self.endingColorString];
-		NSLog(@"endingColorString %@", self.endingColorString);
 		self.endingColor = eColor ? : [UIColor whiteColor];
 
 		self.backgroundColorString = settings[@"backgroundColorString"] ?: @"";
 		UIColor *bColor = [self.class colorFromString:self.backgroundColorString];
-		NSLog(@"backgroundColorString %@", self.backgroundColorString);
 		self.backgroundColor = bColor ? : [UIColor blackColor];
 
 		NSNumber *lM = settings[@"locationMode"];
-		NSLog(@"locationMode %@", lM);
 		self.locationMode = lM ? lM.unsignedIntegerValue : MHDLocationModePreset;
 
 		NSNumber *lP = settings[@"locationPreset"];
-		NSLog(@"locationPreset %@", lP);
 		self.locationPreset = lP ? lP.unsignedIntegerValue : MHDLocationPresetTop;
 
 		NSNumber *lO = settings[@"locationOrientationVertical"];
-		NSLog(@"locationOrientationVertical %@", lO);
 		self.locationOrientationVertical = lO ? lO.boolValue : NO;
 
-		NSString *lX = settings[@"locationX"];
-		NSLog(@"locationX %@", lX);
-		self.locationX = lX ? [self.class cgFloatFromString:lX] : 0.0;
+		self.locationXString = settings[@"locationXString"] ? : @"0";
+		self.locationX = [self.class cgFloatFromString:self.locationXString];
 
-		NSString *lY = settings[@"locationY"];
-		NSLog(@"locationY %@", lY);
-		self.locationY = lY ? [self.class cgFloatFromString:lY] : 0.0;
+		self.locationYString = settings[@"locationYString"] ? : @"0";
+		self.locationY = [self.class cgFloatFromString:self.locationYString];
 	}
 	return self;
 }
@@ -189,8 +180,8 @@
 		@"locationMode" : @(self.locationMode),
 		@"locationPreset" : @(self.locationPreset),
 		@"locationOrientationVertical" : @(self.locationOrientationVertical),
-		@"locationX" : @(self.locationX),
-		@"locationY" : @(self.locationY)
+		@"locationXString" : self.locationXString,
+		@"locationYString" : self.locationYString
 	};
 }
 

@@ -36,7 +36,7 @@
             <key>set</key>
             <string>setPreferenceValue:forSpecifier:</string>
             <key>key</key>
-            <string>locationX</string>
+            <string>locationXString</string>
             <key>label</key>
             <string>X location of HUD (in percent)</string>
         </dict>
@@ -48,7 +48,7 @@
             <key>set</key>
             <string>setPreferenceValue:forSpecifier:</string>
             <key>key</key>
-            <string>locationY</string>
+            <string>locationYString</string>
             <key>label</key>
             <string>Y location of HUD (in percent)</string>
         </dict>
