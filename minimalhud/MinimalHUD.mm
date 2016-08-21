@@ -59,13 +59,12 @@
 }
 
 - (void)setPreferenceValue:(id)value forSpecifier:(PSSpecifier*)specifier {
+	[self.view endEditing:YES];
+	
 	[self.preferences updateValue:value forKey:specifier.properties[@"key"]];
 	[self.preferences.dictionaryRepresentation writeToFile:PREFERENCES_PATH atomically:NO];
 
 	[self reloadSpecifiers];
-
-	// Dismiss keyboard
-	[self.view endEditing:YES];
 
 	CFStringRef notificationName = (CFStringRef)@"com.runnersaw.hud-preferencesChanged";
 	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), notificationName, NULL, NULL, YES);
