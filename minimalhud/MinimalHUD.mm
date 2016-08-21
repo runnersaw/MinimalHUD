@@ -43,7 +43,7 @@
 }
 
 - (id)readPreferenceValue:(PSSpecifier*)specifier {
-	return [self.preferences valueForKey:[specifier.properties[@"key"]]];
+	return [self.preferences valueForKey:((NSString *)[specifier.properties[@"key"]])];
 }
 
 - (void)setPreferenceValue:(id)value forSpecifier:(PSSpecifier*)specifier {
