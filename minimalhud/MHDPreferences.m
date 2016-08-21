@@ -134,7 +134,7 @@
 		NSNumber *lP = settings[@"locationPreset"];
 		self.locationPreset = lP ? lP.unsignedIntegerValue : MHDLocationPresetTop;
 
-		NSNumber *lO = settings[@"locationOrientation"];
+		NSNumber *lO = settings[@"locationOrientationVertical"];
 		self.locationOrientationVertical = lO ? lO.boolValue : NO;
 
 		NSString *lX = settings[@"locationX"];
@@ -182,12 +182,12 @@
 		@"enabled" : @(self.enabled),
 		@"colorMode" : @(self.colorMode),
 		@"colorTheme" : @(self.colorTheme),
-		@"startingColor" : self.startingColorString,
-		@"endingColor" : self.endingColorString,
-		@"backgroundColor" : self.backgroundColorString,
+		@"startingColor" : self.startingColorString ? : @"",
+		@"endingColor" : self.endingColorString ? : @"",
+		@"backgroundColor" : self.backgroundColorString ? : @"",
 		@"locationMode" : @(self.locationMode),
 		@"locationPreset" : @(self.locationPreset),
-		@"locationOrientation" : @(self.locationOrientationVertical),
+		@"locationOrientationVertical" : @(self.locationOrientationVertical),
 		@"locationX" : @(self.locationX),
 		@"locationY" : @(self.locationY)
 	};
