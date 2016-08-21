@@ -13,12 +13,6 @@
         <dict>
             <key>cell</key>
             <string>PSLinkListCell</string>
-            <key>defaults</key>
-            <string>com.runnersaw.hud</string>
-            <key>default</key>
-            <integer>0</integer>
-            <key>PostNotification</key>
-            <string>com.runnersaw.hud-preferencesChanged</string>
             <key>detail</key>
             <string>PSListItemsController</string>
             <key>get</key>

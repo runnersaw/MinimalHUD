@@ -43,8 +43,7 @@
 }
 
 - (id)readPreferenceValue:(PSSpecifier*)specifier {
-	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:PREFERENCES_PATH];
-	return (settings[specifier.properties[@"key"]]) ?: specifier.properties[@"default"];
+	return [self.preferences valueForKey:[specifier.properties[@"key"]]];
 }
 
 - (void)setPreferenceValue:(id)value forSpecifier:(PSSpecifier*)specifier {
@@ -53,10 +52,8 @@
 	NSLog(@"updated value %@", self.preferences.dictionaryRepresentation);
 	[self.preferences.dictionaryRepresentation writeToFile:PREFERENCES_PATH atomically:NO];
 
-	CFStringRef notificationName = (CFStringRef)specifier.properties[@"PostNotification"];
-	if (notificationName) {
-		CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), notificationName, NULL, NULL, YES);
-	}
+	CFStringRef notificationName = (CFStringRef)@"com.runnersaw.hud-preferencesChanged";
+	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), notificationName, NULL, NULL, YES);
 }
 
 @end

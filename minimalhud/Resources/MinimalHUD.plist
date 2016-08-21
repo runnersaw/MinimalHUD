@@ -13,14 +13,12 @@
 		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
-			<key>default</key>
-			<true/>
-			<key>defaults</key>
-			<string>com.runnersaw.hud</string>
-			<key>PostNotification</key>
-			<string>com.runnersaw.hud-preferencesChanged</string>
 			<key>key</key>
 			<string>enabled</string>
+            <key>get</key>
+            <string>readPreferenceValue:</string>
+            <key>set</key>
+            <string>setPreferenceValue:forSpecifier:</string>
 			<key>label</key>
 			<string>Enabled</string>
 		</dict>

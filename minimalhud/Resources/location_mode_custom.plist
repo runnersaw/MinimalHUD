@@ -19,12 +19,10 @@
         <dict>
             <key>cell</key>
             <string>PSSwitchCell</string>
-            <key>default</key>
-            <false/>
-            <key>defaults</key>
-            <string>com.runnersaw.hud</string>
-            <key>PostNotification</key>
-            <string>com.runnersaw.hud-preferencesChanged</string>
+            <key>get</key>
+            <string>readPreferenceValue:</string>
+            <key>set</key>
+            <string>setPreferenceValue:forSpecifier:</string>
             <key>key</key>
             <string>locationOrientationVertical</string>
             <key>label</key>
@@ -33,12 +31,6 @@
         <dict>
             <key>cell</key>
             <string>PSEditTextCell</string>
-            <key>defaults</key>
-            <string>com.runnersaw.hud</string>
-            <key>default</key>
-            <string>0</string>
-            <key>PostNotification</key>
-            <string>com.runnersaw.hud-preferencesChanged</string>
             <key>get</key>
             <string>readPreferenceValue:</string>
             <key>set</key>
@@ -51,12 +43,6 @@
         <dict>
             <key>cell</key>
             <string>PSEditTextCell</string>
-            <key>defaults</key>
-            <string>com.runnersaw.hud</string>
-            <key>default</key>
-            <string>0</string>
-            <key>PostNotification</key>
-            <string>com.runnersaw.hud-preferencesChanged</string>
             <key>get</key>
             <string>readPreferenceValue:</string>
             <key>set</key>
