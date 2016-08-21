@@ -13,14 +13,14 @@
 		<dict>
 			<key>cell</key>
 			<string>PSSwitchCell</string>
-			<key>key</key>
-			<string>enabled</string>
             <key>get</key>
             <string>readPreferenceValue:</string>
             <key>set</key>
             <string>setPreferenceValue:forSpecifier:</string>
 			<key>label</key>
 			<string>Enabled</string>
+			<key>key</key>
+			<string>enabled</string>
 		</dict>
 	</array>
 	<key>title</key>
