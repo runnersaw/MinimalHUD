@@ -64,6 +64,9 @@
 
 	[self reloadSpecifiers];
 
+	// Dismiss keyboard
+	[self.view endEditing:YES];
+
 	CFStringRef notificationName = (CFStringRef)@"com.runnersaw.hud-preferencesChanged";
 	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), notificationName, NULL, NULL, YES);
 }

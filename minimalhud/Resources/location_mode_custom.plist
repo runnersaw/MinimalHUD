@@ -31,6 +31,8 @@
         <dict>
             <key>cell</key>
             <string>PSEditTextCell</string>
+            <key>isNumeric</key>
+            <true/>
             <key>get</key>
             <string>readPreferenceValue:</string>
             <key>set</key>
@@ -43,6 +45,8 @@
         <dict>
             <key>cell</key>
             <string>PSEditTextCell</string>
+            <key>isNumeric</key>
+            <true/>
             <key>get</key>
             <string>readPreferenceValue:</string>
             <key>set</key>
