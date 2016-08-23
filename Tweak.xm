@@ -85,7 +85,7 @@ static MHDPreferences *preferences = nil;
 {
 	if (preferences.locationIgnoresRotation)
 	{
-		NSLog(@"ignores rotation")
+		NSLog(@"ignores rotation");
 		return @[ @1, @0, @0, @1 ];
 	}
 
@@ -96,16 +96,16 @@ static MHDPreferences *preferences = nil;
 		case UIDeviceOrientationFaceUp:
 		case UIDeviceOrientationFaceDown: 
 		case UIDeviceOrientationPortrait:
-		NSLog(@"portrait")
+		NSLog(@"portrait");
 			return @[ @1, @0, @0, @1 ];
 		case UIDeviceOrientationPortraitUpsideDown:
-		NSLog(@"upsidedown")
+		NSLog(@"upsidedown");
 			return @[ @-1, @0, @0, @-1 ];
 		case UIDeviceOrientationLandscapeLeft:
-		NSLog(@"left")
+		NSLog(@"left");
 			return @[ @0, @-1, @1, @0 ];
 		case UIDeviceOrientationLandscapeRight:
-		NSLog(@"right")
+		NSLog(@"right");
 			return @[ @0, @1, @-1, @0 ];
 	}
 
