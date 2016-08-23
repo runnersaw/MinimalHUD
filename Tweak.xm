@@ -85,6 +85,7 @@ static MHDPreferences *preferences = nil;
 {
 	if (preferences.locationIgnoresRotation)
 	{
+		NSLog(@"ignores rotation")
 		return @[ @1, @0, @0, @1 ];
 	}
 
@@ -95,12 +96,16 @@ static MHDPreferences *preferences = nil;
 		case UIDeviceOrientationFaceUp:
 		case UIDeviceOrientationFaceDown: 
 		case UIDeviceOrientationPortrait:
+		NSLog(@"portrait")
 			return @[ @1, @0, @0, @1 ];
 		case UIDeviceOrientationPortraitUpsideDown:
+		NSLog(@"upsidedown")
 			return @[ @-1, @0, @0, @-1 ];
 		case UIDeviceOrientationLandscapeLeft:
+		NSLog(@"left")
 			return @[ @0, @-1, @1, @0 ];
 		case UIDeviceOrientationLandscapeRight:
+		NSLog(@"right")
 			return @[ @0, @1, @-1, @0 ];
 	}
 
@@ -229,7 +234,7 @@ static MHDPreferences *preferences = nil;
 {
 	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
 	UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
-	
+
 	CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
 	CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
 	CGFloat blockWidth = blockView.frame.size.width;
@@ -242,12 +247,12 @@ static MHDPreferences *preferences = nil;
 		blockWidth = tempWidth;
 	}
 
-	CGFloat initialXPercent = preferences.locationX;
+	CGFloat initialXPercent = xPercent;
 	if (initialXPercent < 0 || initialXPercent > 100)
 	{
 		initialXPercent = 0;
 	}
-	CGFloat initialYPercent = preferences.locationY;
+	CGFloat initialYPercent = yPercent;
 	if (initialYPercent < 0 || initialYPercent > 100)
 	{
 		initialYPercent = 0;
