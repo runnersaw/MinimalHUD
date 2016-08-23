@@ -300,10 +300,10 @@ static MHDPreferences *preferences = nil;
 
 	NSLog(@"%@ %@ %@ %@ %@", @(initialXPercent), @(initialYPercent), conversionArray, @(finalXPercent), @(finalYPercent));
 
-	CGFloat availableWidth = screenWidth - blockWidth + 2*PADDING;
+	CGFloat availableWidth = screenWidth - blockWidth - 2*PADDING;
 	CGFloat originX = finalXPercent * availableWidth / 100. + PADDING;
 
-	CGFloat availableHeight = screenHeight - blockHeight + 2*PADDING;
+	CGFloat availableHeight = screenHeight - blockHeight - 2*PADDING;
 	CGFloat originY = finalYPercent * availableHeight / 100. + PADDING;
 
 	NSLog(@"%@ %@ %@ %@", @(screenWidth), @(screenHeight), @(blockWidth), @(blockHeight));
