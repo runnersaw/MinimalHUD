@@ -317,9 +317,9 @@ static MHDPreferences *preferences = nil;
 	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
 	UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
 
-	CGRect frame = blockView.frame;
-	frame.origin = CGPointZero;
-	blockView.frame = frame;
+	CGRect blockFrame = blockView.frame;
+	blockFrame.origin = CGPointZero;
+	blockView.frame = blockFrame;
 
 	CGRect frame = view.frame;
 	frame.origin = CGPointMake(point.x, point.y);
