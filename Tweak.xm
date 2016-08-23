@@ -307,6 +307,7 @@ static MHDPreferences *preferences = nil;
 	CGFloat originY = finalYPercent * availableHeight / 100. + PADDING;
 
 	NSLog(@"%@ %@ %@ %@", @(screenWidth), @(screenHeight), @(blockWidth), @(blockHeight));
+	NSLog(@"%@ %@", @(originX), @(originY));
 
 	[self placeHUDViewAtPoint:CGPointMake(originX, originY)];
 }
