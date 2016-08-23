@@ -74,6 +74,9 @@ static MHDPreferences *preferences = nil;
 		case UIDeviceOrientationLandscapeRight:
 			return ![self isVertical];
 	}
+
+	// Shut up, compiler
+	return [self isVertical];
 }
 
 /// Returns an array of 4 NSNumber *cgFloats where finalX = arr[0]*x0 + arr[1]*y0, finalY = arr[2]*x0 + arr[3]*y0
@@ -100,6 +103,9 @@ static MHDPreferences *preferences = nil;
 		case UIDeviceOrientationLandscapeRight:
 			return @[ @0, @1, @-1, @0 ];
 	}
+
+	// Shut up, compiler
+	return @[ @1, @0, @0, @1 ];
 }
 
 %new
@@ -221,6 +227,9 @@ static MHDPreferences *preferences = nil;
 %new
 - (void)placeHUDViewAtXPercent:(CGFloat)xPercent yPercent:(CGFloat)yPercent
 {
+	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
+	UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
+	
 	CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
 	CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
 	CGFloat blockWidth = blockView.frame.size.width;
