@@ -49,7 +49,7 @@ static MHDPreferences *preferences = nil;
 {
 	BOOL isCustomVertical = (preferences.locationMode == MHDLocationModeCustom && preferences.locationOrientationVertical);
 	BOOL isPresetVertical = (preferences.locationMode == MHDLocationModePreset && 
-		(preferences.locationPreset == MHDLocationPresetRight || preferences.locationPreset == MHDLocationPresetLeft || preferences.locationPreset == MHDLocationPresetVolume));
+		(preferences.locationPreset == MHDLocationPresetRight || preferences.locationPreset == MHDLocationPresetLeft));
 	return (isCustomVertical || isPresetVertical);
 }
 
