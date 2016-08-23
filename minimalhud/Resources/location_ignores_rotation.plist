@@ -18,7 +18,7 @@
             <key>set</key>
             <string>setPreferenceValue:forSpecifier:</string>
             <key>key</key>
-            <string>locationIgnoresLandscape</string>
+            <string>locationIgnoresRotation</string>
             <key>label</key>
             <string>Maintain location when rotated</string>
         </dict>

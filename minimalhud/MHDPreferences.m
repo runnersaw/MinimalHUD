@@ -16,7 +16,7 @@
 @property (nonatomic, readwrite) MHDLocationMode locationMode;
 @property (nonatomic, readwrite) MHDLocationPreset locationPreset;
 @property (nonatomic, readwrite) BOOL locationOrientationVertical;
-@property (nonatomic, readwrite) BOOL locationIgnoresLandscape;
+@property (nonatomic, readwrite) BOOL locationIgnoresRotation;
 @property (nonatomic, readwrite) CGFloat locationX;
 @property (nonatomic, readwrite) CGFloat locationY;
 @property (nonatomic, copy) NSString *locationXString;
@@ -150,8 +150,8 @@
 		NSNumber *lO = settings[@"locationOrientationVertical"];
 		self.locationOrientationVertical = lO ? lO.boolValue : NO;
 
-		NSNumber *lL = settings[@"locationIgnoresLandscape"];
-		self.locationIgnoresLandscape = lL ? lL.boolValue : YES;
+		NSNumber *lR = settings[@"locationIgnoresRotation"];
+		self.locationIgnoresRotation = lR ? lR.boolValue : YES;
 
 		self.locationXString = settings[@"locationXString"] ? : @"0";
 		self.locationX = [self.class cgFloatFromString:self.locationXString];
@@ -179,7 +179,7 @@
 		@"locationMode" : @(self.locationMode),
 		@"locationPreset" : @(self.locationPreset),
 		@"locationOrientationVertical" : @(self.locationOrientationVertical),
-		@"locationIgnoresLandscape" : @(self.locationIgnoresLandscape),
+		@"locationIgnoresRotation" : @(self.locationIgnoresRotation),
 		@"locationXString" : self.locationXString,
 		@"locationYString" : self.locationYString
 	};
