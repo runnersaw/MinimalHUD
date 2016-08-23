@@ -61,17 +61,15 @@ static MHDPreferences *preferences = nil;
 		return [self isVertical];
 	}
 
-	UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
 	switch (orientation)
 	{
-		case UIDeviceOrientationUnknown:
-		case UIDeviceOrientationFaceUp:
-		case UIDeviceOrientationFaceDown: 
-		case UIDeviceOrientationPortrait:
-		case UIDeviceOrientationPortraitUpsideDown:
+		case UIInterfaceOrientationUnknown:
+		case UIInterfaceOrientationPortrait:
+		case UIInterfaceOrientationPortraitUpsideDown:
 			return [self isVertical];
-		case UIDeviceOrientationLandscapeLeft:
-		case UIDeviceOrientationLandscapeRight:
+		case UIInterfaceOrientationLandscapeLeft:
+		case UIInterfaceOrientationLandscapeRight:
 			return ![self isVertical];
 	}
 
@@ -90,22 +88,20 @@ static MHDPreferences *preferences = nil;
 		return @[ @1, @0, @0, @1 ];
 	}
 
-	UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
 	switch (orientation)
 	{
-		case UIDeviceOrientationUnknown:
-		case UIDeviceOrientationFaceUp:
-		case UIDeviceOrientationFaceDown: 
-		case UIDeviceOrientationPortrait:
+		case UIInterfaceOrientationUnknown:
+		case UIInterfaceOrientationPortrait:
 		NSLog(@"portrait");
 			return @[ @1, @0, @0, @1 ];
-		case UIDeviceOrientationPortraitUpsideDown:
+		case UIInterfaceOrientationPortraitUpsideDown:
 		NSLog(@"upsidedown");
 			return @[ @-1, @0, @0, @-1 ];
-		case UIDeviceOrientationLandscapeLeft:
+		case UIInterfaceOrientationLandscapeLeft:
 		NSLog(@"left");
 			return @[ @0, @-1, @1, @0 ];
-		case UIDeviceOrientationLandscapeRight:
+		case UIInterfaceOrientationLandscapeRight:
 		NSLog(@"right");
 			return @[ @0, @1, @-1, @0 ];
 	}
@@ -130,28 +126,32 @@ static MHDPreferences *preferences = nil;
 		return;
 	}
 	
-	UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
 	switch (orientation)
 	{
-		case UIDeviceOrientationUnknown:
-		case UIDeviceOrientationFaceUp:
-		case UIDeviceOrientationFaceDown: 
-		case UIDeviceOrientationPortrait:
-		case UIDeviceOrientationPortraitUpsideDown:
+		case UIInterfaceOrientationUnknown:
+		case UIInterfaceOrientationPortrait:
 			if ([self isVertical])
 			{
 				double rads = 3 * M_PI / 2;
 				view.transform = CGAffineTransformMakeRotation(rads);
 			}
 			return;
-		case UIDeviceOrientationLandscapeLeft:
+		case UIInterfaceOrientationPortraitUpsideDown:
+			if ([self isVertical])
+			{
+				double rads = M_PI / 2;
+				view.transform = CGAffineTransformMakeRotation(rads);
+			}
+			return;
+		case UIInterfaceOrientationLandscapeLeft:
 			if (![self isVertical])
 			{
 				double rads = M_PI / 2;
 				view.transform = CGAffineTransformMakeRotation(rads);
 			}
 			return;
-		case UIDeviceOrientationLandscapeRight:
+		case UIInterfaceOrientationLandscapeRight:
 			if ([self isVertical])
 			{
 				double rads = M_PI;
@@ -261,21 +261,21 @@ static MHDPreferences *preferences = nil;
 
 	NSArray *conversionArray = [self locationConversionArray];
 
-	// Rotations of 90 degrees (i.e. device rotations) can only have either an x0 or a y0 coefficient, not both, so = instead of += is fine.
+	// Rotations of 90 degrees (i.e. device rotations) can only have either an x0 or a y0 coefficient, not both, so else if is fine.
 	CGFloat finalXPercent = 0;
 	if (((NSNumber *)conversionArray[0]).doubleValue == -1)
 	{
 		finalXPercent = 100. - initialXPercent;
 	}
-	if (((NSNumber *)conversionArray[0]).doubleValue == 1)
+	else if (((NSNumber *)conversionArray[0]).doubleValue == 1)
 	{
 		finalXPercent = initialXPercent;
 	}
-	if (((NSNumber *)conversionArray[1]).doubleValue == -1)
+	else if (((NSNumber *)conversionArray[1]).doubleValue == -1)
 	{
 		finalXPercent = 100. - initialYPercent;
 	}
-	if (((NSNumber *)conversionArray[1]).doubleValue == 1)
+	else if (((NSNumber *)conversionArray[1]).doubleValue == 1)
 	{
 		finalXPercent = initialYPercent;
 	}
@@ -285,15 +285,15 @@ static MHDPreferences *preferences = nil;
 	{
 		finalYPercent = 100. - initialXPercent;
 	}
-	if (((NSNumber *)conversionArray[2]).doubleValue == 1)
+	else if (((NSNumber *)conversionArray[2]).doubleValue == 1)
 	{
 		finalYPercent = initialXPercent;
 	}
-	if (((NSNumber *)conversionArray[3]).doubleValue == -1)
+	else if (((NSNumber *)conversionArray[3]).doubleValue == -1)
 	{
 		finalYPercent = 100. - initialYPercent;
 	}
-	if (((NSNumber *)conversionArray[3]).doubleValue == 1)
+	else if (((NSNumber *)conversionArray[3]).doubleValue == 1)
 	{
 		finalYPercent = initialYPercent;
 	}
@@ -306,6 +306,8 @@ static MHDPreferences *preferences = nil;
 	CGFloat availableHeight = screenHeight - blockHeight + 2*PADDING;
 	CGFloat originY = finalYPercent * availableHeight / 100. + PADDING;
 
+	NSLog(@"%@ %@ %@ %@", @(screenWidth), @(screenHeight), @(blockWidth), @(blockHeight));
+
 	[self placeHUDViewAtPoint:CGPointMake(originX, originY)];
 }
 
@@ -315,35 +317,12 @@ static MHDPreferences *preferences = nil;
 	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
 	UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
 
-	CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-	CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-
-	CGFloat blockOffsetX = blockView.frame.origin.x;
-	CGFloat blockOffsetY = blockView.frame.origin.y;
-	CGFloat blockWidth = blockView.frame.size.width;
-	CGFloat blockHeight = blockView.frame.size.height;
-
-	if ([self isVerticalForCurrentOrientation])
-	{
-		CGFloat tempWidth = blockHeight;
-		blockHeight = blockWidth;
-		blockWidth = tempWidth;
-	}
-
-	CGFloat finalX = point.x - blockOffsetX;
-	if (finalX > screenWidth || finalX < 0)
-	{
-		finalX = 0;
-	}
-
-	CGFloat finalY = point.y - blockOffsetY;
-	if (finalY > screenHeight || finalY < 0)
-	{
-		finalY = 0;
-	}
+	CGRect frame = blockView.frame;
+	frame.origin = CGPointZero;
+	blockView.frame = frame;
 
 	CGRect frame = view.frame;
-	frame.origin = CGPointMake(finalX, finalY);
+	frame.origin = CGPointMake(point.x, point.y);
 	view.frame = frame;
 }
 
