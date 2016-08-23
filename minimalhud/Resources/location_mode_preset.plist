@@ -29,7 +29,6 @@
                 <string>Right</string>
                 <string>Left</string>
                 <string>Bottom</string>
-                <string>Volume</string>
             </array>
             <key>validValues</key>
             <array>
@@ -37,7 +36,6 @@
                 <integer>1</integer>
                 <integer>2</integer>
                 <integer>3</integer>
-                <integer>4</integer>
             </array>
         </dict>
 	</array>

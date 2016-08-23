@@ -13,6 +13,7 @@
 @property (nonatomic, readonly) MHDLocationMode locationMode;
 @property (nonatomic, readonly) MHDLocationPreset locationPreset;
 @property (nonatomic, readonly) BOOL locationOrientationVertical;
+@property (nonatomic, readonly) BOOL locationIgnoresLandscape;
 @property (nonatomic, readonly) CGFloat locationX;
 @property (nonatomic, readonly) CGFloat locationY;
 

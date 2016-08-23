@@ -24,8 +24,11 @@
 
 // New methods
 - (BOOL)isVertical;
+- (BOOL)isVerticalForCurrentOrientation;
+- (NSArray *)locationConversionArray;
 - (void)configureView:(SBHUDView *)view;
-- (void)placeHUDViewAtPoint:(CGPoint)point vertical:(BOOL)vertical;
+- (void)placeHUDViewAtXPercent:(CGFloat)xPercent yPercent:(CGFloat)yPercent;
+- (void)placeHUDViewAtPoint:(CGPoint)point;
 
 @end
 
@@ -51,16 +54,104 @@ static MHDPreferences *preferences = nil;
 }
 
 %new
-- (void)configureView:(SBHUDView *)view
+- (BOOL)isVerticalForCurrentOrientation
 {
-	if ([self isVertical])
+	if (preferences.locationIgnoresRotation)
 	{
-		double rads = 3 * M_PI / 2;
-		view.transform = CGAffineTransformMakeRotation(rads);
+		return [self isVertical];
 	}
 
+	UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+	switch (orientation)
+	{
+		case UIDeviceOrientationUnknown:
+		case UIDeviceOrientationFaceUp:
+		case UIDeviceOrientationFaceDown: 
+		case UIDeviceOrientationPortrait:
+		case UIDeviceOrientationPortraitUpsideDown:
+			return [self isVertical];
+		case UIDeviceOrientationLandscapeLeft:
+		case UIDeviceOrientationLandscapeRight:
+			return ![self isVertical];
+	}
+}
+
+/// Returns an array of 4 NSNumber *cgFloats where finalX = arr[0]*x0 + arr[1]*y0, finalY = arr[2]*x0 + arr[3]*y0
+%new
+- (NSArray *)locationConversionArray
+{
+	if (preferences.locationIgnoresRotation)
+	{
+		return @[ @1, @0, @0, @1 ];
+	}
+
+	UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+	switch (orientation)
+	{
+		case UIDeviceOrientationUnknown:
+		case UIDeviceOrientationFaceUp:
+		case UIDeviceOrientationFaceDown: 
+		case UIDeviceOrientationPortrait:
+			return @[ @1, @0, @0, @1 ];
+		case UIDeviceOrientationPortraitUpsideDown:
+			return @[ @-1, @0, @0, @-1 ];
+		case UIDeviceOrientationLandscapeLeft:
+			return @[ @0, @-1, @1, @0 ];
+		case UIDeviceOrientationLandscapeRight:
+			return @[ @0, @1, @-1, @0 ];
+	}
+}
+
+%new
+- (void)configureView:(SBHUDView *)view
+{
 	UIView *backdropView = MSHookIvar<UIView *>(view, "_backdropView");
 	backdropView.hidden = YES;
+
+	if (preferences.locationIgnoresRotation)
+	{
+		if ([self isVertical])
+		{
+			double rads = 3 * M_PI / 2;
+			view.transform = CGAffineTransformMakeRotation(rads);
+		}
+		return;
+	}
+	
+	UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+	switch (orientation)
+	{
+		case UIDeviceOrientationUnknown:
+		case UIDeviceOrientationFaceUp:
+		case UIDeviceOrientationFaceDown: 
+		case UIDeviceOrientationPortrait:
+		case UIDeviceOrientationPortraitUpsideDown:
+			if ([self isVertical])
+			{
+				double rads = 3 * M_PI / 2;
+				view.transform = CGAffineTransformMakeRotation(rads);
+			}
+			return;
+		case UIDeviceOrientationLandscapeLeft:
+			if (![self isVertical])
+			{
+				double rads = M_PI / 2;
+				view.transform = CGAffineTransformMakeRotation(rads);
+			}
+			return;
+		case UIDeviceOrientationLandscapeRight:
+			if ([self isVertical])
+			{
+				double rads = M_PI;
+				view.transform = CGAffineTransformMakeRotation(rads);
+			}
+			else
+			{
+				double rads = 3 * M_PI / 2;
+				view.transform = CGAffineTransformMakeRotation(rads);
+			}
+			return;
+	}
 }
 
 - (void)presentHUDView:(id)arg1 autoDismissWithDelay:(double)arg2
@@ -95,73 +186,83 @@ static MHDPreferences *preferences = nil;
 		return;
 	}
 
-	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
-	UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
-
-	CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-	CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-	CGFloat blockWidth = blockView.frame.size.width;
-	CGFloat blockHeight = blockView.frame.size.height;
-
-	if ([self isVertical])
-	{
-		CGFloat tempWidth = blockHeight;
-		blockHeight = blockWidth;
-		blockWidth = tempWidth;
-	}
-
 	if (preferences.locationMode == MHDLocationModePreset)
 	{
 		switch (preferences.locationPreset)
 		{
 			case MHDLocationPresetRight:
 			{
-				[self placeHUDViewAtPoint:CGPointMake(screenWidth - blockWidth - PADDING, (screenHeight - blockHeight)/2.) vertical:YES];
+				[self placeHUDViewAtXPercent:100 yPercent:50];
 				break;
 			}
 			case MHDLocationPresetLeft:
 			{
-				[self placeHUDViewAtPoint:CGPointMake(PADDING, (screenHeight - blockHeight)/2.) vertical:YES];
+				[self placeHUDViewAtXPercent:0 yPercent:50];
 				break;
 			}
 			case MHDLocationPresetTop:
 			{
-				[self placeHUDViewAtPoint:CGPointMake((screenWidth - blockWidth)/2., PADDING) vertical:NO];
+				[self placeHUDViewAtXPercent:50 yPercent:0];
 				break;
 			}
 			case MHDLocationPresetBottom:
 			{
-				[self placeHUDViewAtPoint:CGPointMake((screenWidth - blockWidth)/2., screenHeight - blockHeight - PADDING) vertical:NO];
-				break;
-			}
-			case MHDLocationPresetVolume:
-			{
-				[self placeHUDViewAtPoint:CGPointMake(PADDING, 50.) vertical:YES];
+				[self placeHUDViewAtXPercent:50 yPercent:100];
 				break;
 			}
 		}
 	}
 	else if (preferences.locationMode == MHDLocationModeCustom)
 	{
-		CGFloat availableWidth = screenWidth - blockWidth + 2*PADDING;
-		CGFloat originX = 0;
-		if (preferences.locationX >= 0 && preferences.locationX <= 100)
-		{
-			originX = preferences.locationX * availableWidth / 100. + PADDING;
-		}
-
-		CGFloat availableHeight = screenHeight - blockHeight + 2*PADDING;
-		CGFloat originY = 0;
-		if (preferences.locationY >= 0 && preferences.locationY <= 100)
-		{
-			originY = preferences.locationY * availableHeight / 100. + PADDING;
-		}
-		[self placeHUDViewAtPoint:CGPointMake(originX, originY) vertical:[self isVertical]];
+		[self placeHUDViewAtXPercent:preferences.locationX yPercent:preferences.locationY];
 	}
 }
 
 %new
-- (void)placeHUDViewAtPoint:(CGPoint)point vertical:(BOOL)vertical {
+- (void)placeHUDViewAtXPercent:(CGFloat)xPercent yPercent:(CGFloat)yPercent
+{
+	CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+	CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+	CGFloat blockWidth = blockView.frame.size.width;
+	CGFloat blockHeight = blockView.frame.size.height;
+
+	if ([self isVerticalForCurrentOrientation])
+	{
+		CGFloat tempWidth = blockHeight;
+		blockHeight = blockWidth;
+		blockWidth = tempWidth;
+	}
+
+	CGFloat initialXPercent = preferences.locationX;
+	if (initialXPercent < 0 || initialXPercent > 100)
+	{
+		initialXPercent = 0;
+	}
+	CGFloat initialYPercent = preferences.locationY;
+	if (initialYPercent < 0 || initialYPercent > 100)
+	{
+		initialYPercent = 0;
+	}
+
+	NSArray *conversionArray = [self locationConversionArray];
+	CGFloat finalXPercent = ((NSNumber *)conversionArray[0]).doubleValue * initialXPercent + ((NSNumber *)conversionArray[1]).doubleValue * initialYPercent;
+	CGFloat finalYPercent = ((NSNumber *)conversionArray[2]).doubleValue * initialXPercent + ((NSNumber *)conversionArray[3]).doubleValue * initialYPercent;
+	finalXPercent = (finalXPercent + 100.) / 2.;
+	finalYPercent = (finalYPercent + 100.) / 2.;
+	NSLog(@"%@ %@ %@ %@ %@", @(initialXPercent), @(initialYPercent), conversionArray, @(finalXPercent), @(finalYPercent));
+
+	CGFloat availableWidth = screenWidth - blockWidth + 2*PADDING;
+	CGFloat originX = finalXPercent * availableWidth / 100. + PADDING;
+
+	CGFloat availableHeight = screenHeight - blockHeight + 2*PADDING;
+	CGFloat originY = finalYPercent * availableHeight / 100. + PADDING;
+
+	[self placeHUDViewAtPoint:CGPointMake(originX, originY)];
+}
+
+%new
+- (void)placeHUDViewAtPoint:(CGPoint)point
+{
 	SBHUDView *view = MSHookIvar<SBHUDView *>(self, "_hudView");
 	UIView *blockView = MSHookIvar<UIView *>(view, "_blockView");
 
@@ -173,26 +274,21 @@ static MHDPreferences *preferences = nil;
 	CGFloat blockWidth = blockView.frame.size.width;
 	CGFloat blockHeight = blockView.frame.size.height;
 
-
-	if ([self isVertical])
+	if ([self isVerticalForCurrentOrientation])
 	{
 		CGFloat tempWidth = blockHeight;
 		blockHeight = blockWidth;
 		blockWidth = tempWidth;
-
-		CGFloat tempX = blockOffsetY;
-		blockOffsetY = blockOffsetX;
-		blockOffsetX = tempX;
 	}
 
 	CGFloat finalX = point.x - blockOffsetX;
-	if (finalX > screenWidth)
+	if (finalX > screenWidth || finalX < 0)
 	{
 		finalX = 0;
 	}
 
 	CGFloat finalY = point.y - blockOffsetY;
-	if (finalY > screenHeight)
+	if (finalY > screenHeight || finalY < 0)
 	{
 		finalY = 0;
 	}

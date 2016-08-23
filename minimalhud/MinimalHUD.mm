@@ -48,6 +48,7 @@
 	{
 		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode_custom" target:self] retain]];
 	}
+	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_ignores_rotation" target:self] retain]];
 
 	_specifiers = specs;
 
@@ -59,8 +60,6 @@
 }
 
 - (void)setPreferenceValue:(id)value forSpecifier:(PSSpecifier*)specifier {
-	[self.view endEditing:YES];
-	
 	[self.preferences updateValue:value forKey:specifier.properties[@"key"]];
 	[self.preferences.dictionaryRepresentation writeToFile:PREFERENCES_PATH atomically:NO];
 
