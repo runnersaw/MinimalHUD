@@ -79,7 +79,8 @@ static MHDPreferences *preferences = nil;
 	return [self isVertical];
 }
 
-/// Returns an array of 4 NSNumber *cgFloats where finalX = arr[0]*x0 + arr[1]*y0, finalY = arr[2]*x0 + arr[3]*y0
+/// Returns an array of 4 NSNumber *cgFloats where finalX = (x0 if arr[0] is 1), (1-x0 if arr[0] is -1), (y0 if arr[1] is 1), or (1-y0 if arr[1] is -1). 
+/// The same applies to finalY, but with arr[2] and arr[3].
 %new
 - (NSArray *)locationConversionArray
 {
@@ -259,10 +260,44 @@ static MHDPreferences *preferences = nil;
 	}
 
 	NSArray *conversionArray = [self locationConversionArray];
-	CGFloat finalXPercent = ((NSNumber *)conversionArray[0]).doubleValue * initialXPercent + ((NSNumber *)conversionArray[1]).doubleValue * initialYPercent;
-	CGFloat finalYPercent = ((NSNumber *)conversionArray[2]).doubleValue * initialXPercent + ((NSNumber *)conversionArray[3]).doubleValue * initialYPercent;
-	finalXPercent = (finalXPercent + 100.) / 2.;
-	finalYPercent = (finalYPercent + 100.) / 2.;
+
+	// Rotations of 90 degrees (i.e. device rotations) can only have either an x0 or a y0 coefficient, not both, so = instead of += is fine.
+	CGFloat finalXPercent = 0;
+	if (((NSNumber *)conversionArray[0]).doubleValue == -1)
+	{
+		finalXPercent = 100. - initialXPercent;
+	}
+	if (((NSNumber *)conversionArray[0]).doubleValue == 1)
+	{
+		finalXPercent = initialXPercent;
+	}
+	if (((NSNumber *)conversionArray[1]).doubleValue == -1)
+	{
+		finalXPercent = 100. - initialYPercent;
+	}
+	if (((NSNumber *)conversionArray[1]).doubleValue == 1)
+	{
+		finalXPercent = initialYPercent;
+	}
+
+	CGFloat finalYPercent = 0;
+	if (((NSNumber *)conversionArray[2]).doubleValue == -1)
+	{
+		finalYPercent = 100. - initialXPercent;
+	}
+	if (((NSNumber *)conversionArray[2]).doubleValue == 1)
+	{
+		finalYPercent = initialXPercent;
+	}
+	if (((NSNumber *)conversionArray[3]).doubleValue == -1)
+	{
+		finalYPercent = 100. - initialYPercent;
+	}
+	if (((NSNumber *)conversionArray[3]).doubleValue == 1)
+	{
+		finalYPercent = initialYPercent;
+	}
+
 	NSLog(@"%@ %@ %@ %@ %@", @(initialXPercent), @(initialYPercent), conversionArray, @(finalXPercent), @(finalYPercent));
 
 	CGFloat availableWidth = screenWidth - blockWidth + 2*PADDING;
