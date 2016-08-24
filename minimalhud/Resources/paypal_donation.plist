@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+        <dict>
+            <key>cell</key>
+            <string>PSGroupCell</string>
+            <key>label</key>
+            <string>Like MinimalHUD?</string>
+        </dict>
+        <dict>
+            <key>cell</key>
+            <string>PSButtonCell</string>
+            <key>action</key>
+            <string>paypalButtonTapped</string>
+            <key>label</key>
+            <string>Buy me a beer!</string>
+        </dict>
+	</array>
+	<key>title</key>
+	<string>MinimalHUD</string>
+</dict>
+</plist>
