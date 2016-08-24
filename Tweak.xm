@@ -173,7 +173,6 @@ static MHDPreferences *preferences = nil;
 	CGFloat blockWidth = blockView.frame.size.width;
 	CGFloat blockHeight = blockView.frame.size.height;
 
-
 	if ([self isVertical])
 	{
 		CGFloat tempWidth = blockHeight;

@@ -49,6 +49,9 @@
 		[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"location_mode_custom" target:self] retain]];
 	}
 
+	// Paypal donation
+	[specs addObjectsFromArray: [[self loadSpecifiersFromPlistName:@"paypal_donation" target:self] retain]];
+
 	_specifiers = specs;
 
 	return _specifiers;
@@ -68,6 +71,11 @@
 
 	CFStringRef notificationName = (CFStringRef)@"com.runnersaw.hud-preferencesChanged";
 	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), notificationName, NULL, NULL, YES);
+}
+
+- (void)paypalButtonTapped
+{
+	[[UIApplication sharedApplication] openURL:@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=MJJBDZFUR483S&lc=US&item_name=MinimalHUD&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted"];
 }
 
 @end
