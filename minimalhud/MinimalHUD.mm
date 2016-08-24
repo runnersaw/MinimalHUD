@@ -75,7 +75,7 @@
 
 - (void)paypalButtonTapped
 {
-	[[UIApplication sharedApplication] openURL:@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=MJJBDZFUR483S&lc=US&item_name=MinimalHUD&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted"];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=MJJBDZFUR483S&lc=US&item_name=MinimalHUD&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted"]];
 }
 
 @end
