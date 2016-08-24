@@ -143,14 +143,14 @@ static MHDPreferences *preferences = nil;
 	}
 	else if (preferences.locationMode == MHDLocationModeCustom)
 	{
-		CGFloat availableWidth = screenWidth - blockWidth + 2*PADDING;
+		CGFloat availableWidth = screenWidth - blockWidth - 2*PADDING;
 		CGFloat originX = 0;
 		if (preferences.locationX >= 0 && preferences.locationX <= 100)
 		{
 			originX = preferences.locationX * availableWidth / 100. + PADDING;
 		}
 
-		CGFloat availableHeight = screenHeight - blockHeight + 2*PADDING;
+		CGFloat availableHeight = screenHeight - blockHeight - 2*PADDING;
 		CGFloat originY = 0;
 		if (preferences.locationY >= 0 && preferences.locationY <= 100)
 		{
